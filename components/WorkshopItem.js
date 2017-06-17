@@ -21,7 +21,6 @@ import ProgressBar from './ProgressBar';
 
 export default class WorkshopItem extends Component {
     render() {
-        const {centerRow} = styles;
         return (
             <Card>
                 <CardItem cardBody>
