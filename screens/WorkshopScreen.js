@@ -24,9 +24,6 @@ import WorkshopItem from '../components/WorkshopItem';
 export default class WorkshopScreen extends Component {
     constructor(props) {
         super(props);
-        const ds = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2
-        });
         this.state = {
             dataSource: [1, 2, 3, 4]
         };
@@ -48,22 +45,16 @@ export default class WorkshopScreen extends Component {
                 </Header>
                 <Segment>
                     <Button first>
-                        <Text>熱門</Text>
+                        <Text>調查中</Text>
                     </Button>
                     <Button last active>
-                        <Text>最新</Text>
+                        <Text>已達標</Text>
                     </Button>
                 </Segment>
-                <Content padder>
+                <Content>
                     <List removeClippedSubviews={false} dataArray={this.state.dataSource} renderRow={(rowData) => <WorkshopItem/>}/>
                 </Content>
             </Container>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    }
-});
