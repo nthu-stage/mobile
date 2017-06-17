@@ -15,27 +15,24 @@ import {
     Title,
     Grid,
     Col,
-    Row
+    Row,
+    ListItem
 } from 'native-base';
 import ProgressBar from './ProgressBar';
+import Diveder from './Diveder';
 
 export default class WorkshopItem extends Component {
     render() {
         return (
-            <Card>
-                <CardItem cardBody>
-                    <Image style={{
-                        resizeMode: 'cover',
-                        height: 140,
-                        width: 350,
-                        left: 0,
-                        right: 0,
-                        top: 0
-                    }} source={{
-                        uri: 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
-                    }}/>
-                </CardItem>
-                <CardItem>
+            <Content>
+                <Image style={{
+                    resizeMode: 'cover',
+                    height: 180,
+                    width: null
+                }} source={{
+                    uri: 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
+                }}/>
+                <Content padder>
                     <Grid>
                         <Row>
                             <Col>
@@ -49,7 +46,7 @@ export default class WorkshopItem extends Component {
                         </Row>
                         <Row>
                             <Col>
-                                <ProgressBar />
+                                <ProgressBar/>
                             </Col>
                         </Row>
                         <Row>
@@ -79,8 +76,9 @@ export default class WorkshopItem extends Component {
                             </Col>
                         </Row>
                     </Grid>
-                </CardItem>
-            </Card>
+                </Content>
+                <View style={{marginBottom: 30}}/>
+            </Content>
         );
     }
 }
