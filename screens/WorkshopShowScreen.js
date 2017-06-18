@@ -88,9 +88,7 @@ export default class WorkshopShowScreen extends Component {
                         }} source={{
                             uri: 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
                         }}/>
-                        <View style={bannerBackground}>
-                            <H1 style={bannerTitle}>Hello, World</H1>
-                        </View>
+                        <View style={bannerBackground}/>
                         <View style={bannerTitle}>
                             <H1 style={{
                                 color: 'white'

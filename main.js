@@ -66,7 +66,7 @@ export const AppNavigator = TabNavigator({
                     likeIdeaList: {
                         screen: IdeaListScreen
                     }
-                })
+                }, {headerMode: 'none'})
             }
         })
     }
