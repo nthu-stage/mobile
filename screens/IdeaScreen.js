@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, ListView, Image} from 'react-native';
+import {View, Text, StyleSheet, ListView, Image, Modal, Alert} from 'react-native';
 import {
     Container,
     Header,
@@ -15,19 +15,26 @@ import {
     ListItem,
     Card,
     CardItem,
-    Thumbnail
+    Thumbnail,
+    Item,
+    Input
 } from 'native-base';
 import IdeaItem from '../components/IdeaItem';
+import SearModal from '../components/SearchModal'
 
 export default class IdeaScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: [1, 2, 3, 4]
+            dataSource: [1, 2, 3, 4],
+            order:'new',
+            modalToggle: false,
+            searchText:''
         };
     }
     
     render() {
+        const { order, modalToggle, searchText } = this.state;
         return (
             <Container>
                 <Header>
@@ -36,16 +43,15 @@ export default class IdeaScreen extends Component {
                         <Title>許願池</Title>
                     </Body>
                     <Right>
-                        <Button transparent>
-                            <Icon name="search"/>
-                        </Button>
+                        <SearModal passbackSearchText={(e)=>this.setState({searchText:e})} />
                     </Right>
+                     
                 </Header>
                 <Segment>
-                    <Button first>
+                    <Button first active={order==="hot"} onPress={()=>{this.setState({order:'hot'})}}>
                         <Text>熱門</Text>
                     </Button>
-                    <Button last active>
+                    <Button last active={order==="new"} onPress={()=>{this.setState({order:'new'})}}>
                         <Text>最新</Text>
                     </Button>
                 </Segment>
