@@ -66,7 +66,7 @@ export const AppNavigator = TabNavigator({
                     likeIdeaList: {
                         screen: IdeaListScreen
                     }
-                })
+                }, {headerMode: 'none'})
             }
         })
     }
@@ -93,7 +93,7 @@ function mapStateToProps({nav}) {
 
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
 
-const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'news'}));
+const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'profileStack'}));
 const nav = (state = initialState, action) => {
     const nextState = AppNavigator.router.getStateForAction(action, state);
     return nextState || state;
