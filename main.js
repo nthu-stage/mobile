@@ -5,9 +5,7 @@ import {StyleProvider} from 'native-base';
 import getTheme from './native-base-theme/components';
 import platform from './native-base-theme/variables/platform';
 
-import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
 import {Provider, connect} from 'react-redux';
-import thunkMiddleware from 'redux-thunk';
 
 import {TabNavigator, StackNavigator, NavigationActions, addNavigationHelpers} from 'react-navigation';
 import AuthScreen from './screens/AuthScreen';
@@ -19,6 +17,8 @@ import NewsScreen from './screens/NewsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import WorkshopListScreen from './screens/WorkshopListScreen';
 import IdeaListScreen from './screens/IdeaListScreen';
+
+import getStore from './reducers/index'
 
 export const AppNavigator = TabNavigator({
     auth: {
@@ -93,13 +93,13 @@ function mapStateToProps({nav}) {
 
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
 
-const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'profileStack'}));
-const nav = (state = initialState, action) => {
+const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'workshop'}));
+export const nav = (state = initialState, action) => {
     const nextState = AppNavigator.router.getStateForAction(action, state);
     return nextState || state;
 };
 
-const store = createStore(combineReducers({nav}), compose(applyMiddleware(thunkMiddleware)));
+const store = getStore(nav);
 
 class App extends Component {
     render() {
