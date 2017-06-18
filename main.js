@@ -17,6 +17,7 @@ import NewsScreen from './screens/NewsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import WorkshopListScreen from './screens/WorkshopListScreen';
 import IdeaListScreen from './screens/IdeaListScreen';
+import reducers from './reducers';
 
 import getStore from './reducers/index'
 
@@ -93,6 +94,7 @@ function mapStateToProps({nav}) {
 
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
 
+
 const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'workshop'}));
 export const nav = (state = initialState, action) => {
     const nextState = AppNavigator.router.getStateForAction(action, state);
@@ -100,6 +102,7 @@ export const nav = (state = initialState, action) => {
 };
 
 const store = getStore(nav);
+
 
 class App extends Component {
     render() {

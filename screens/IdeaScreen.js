@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, ListView, Image} from 'react-native';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {View, Text, StyleSheet, ListView, Image, Alert} from 'react-native';
 import {
     Container,
     Header,
@@ -15,19 +17,30 @@ import {
     ListItem,
     Card,
     CardItem,
-    Thumbnail
+    Thumbnail,
 } from 'native-base';
 import IdeaItem from '../components/IdeaItem';
+import SearchModal from '../components/SearchModal'
+import { listIdea } from '../actions/idea'
 
-export default class IdeaScreen extends Component {
+class IdeaScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: [1, 2, 3, 4]
+            dataSource: [1, 2, 3, 4],
+            order:'new',
+            modalToggle: false,
+            searchText:''
         };
+    }
+    componentWillMount(){
+        this.props.listIdea(this.state.searchText,this.state.order);
     }
     
     render() {
+        const { order, modalToggle, searchText } = this.state;
+        const ideas = this.props.ideaList;
+        console.log(ideas);
         return (
             <Container>
                 <Header>
@@ -36,16 +49,15 @@ export default class IdeaScreen extends Component {
                         <Title>許願池</Title>
                     </Body>
                     <Right>
-                        <Button transparent>
-                            <Icon name="search"/>
-                        </Button>
+                        <SearchModal passbackSearchText={(e)=>this.setState({searchText:e})} />
                     </Right>
+                     
                 </Header>
                 <Segment>
-                    <Button first>
+                    <Button first active={order==="hot"} onPress={()=>{this.setState({order:'hot'})}}>
                         <Text>熱門</Text>
                     </Button>
-                    <Button last active>
+                    <Button last active={order==="new"} onPress={()=>{this.setState({order:'new'})}}>
                         <Text>最新</Text>
                     </Button>
                 </Segment>
@@ -56,3 +68,15 @@ export default class IdeaScreen extends Component {
         );
     }
 }
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        listIdea,
+    }, dispatch);
+}
+function mapStateToProps({ ideaList }) {
+    return {
+        ideaList,
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(IdeaScreen);

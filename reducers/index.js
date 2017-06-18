@@ -1,3 +1,4 @@
+
 import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import AlertReducer from './reducer_alert';
@@ -12,3 +13,4 @@ export default function getStore(nav) {
 
     return store;
 }
+
