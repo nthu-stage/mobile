@@ -1,9 +1,16 @@
-import { IdeaListReducer } from './reducer_idea';
-import {combineReducers} from 'redux';
-const rootReducer = combineReducers({
 
-    ideaList: IdeaListReducer,
+import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import AlertReducer from './reducer_alert';
+import {WorkshopListReducer} from './reducer_workshop';
 
-});
+export default function getStore(nav) {
+    const store = createStore(combineReducers({
+        nav,
+        alert: AlertReducer,
+        workshopList: WorkshopListReducer
+    }), compose(applyMiddleware(thunkMiddleware)));
 
-export default rootReducer;
+    return store;
+}
+
