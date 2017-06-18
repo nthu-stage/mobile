@@ -94,23 +94,15 @@ function mapStateToProps({nav}) {
 
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
 
-<<<<<<< HEAD
 
-const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'news'}));
-const nav = (state = initialState, action) => {
-=======
 const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'workshop'}));
 export const nav = (state = initialState, action) => {
->>>>>>> master
     const nextState = AppNavigator.router.getStateForAction(action, state);
     return nextState || state;
 };
 
-<<<<<<< HEAD
-const store = createStore(combineReducers({nav, reducers}), compose(applyMiddleware(thunkMiddleware)));
-=======
 const store = getStore(nav);
->>>>>>> master
+
 
 class App extends Component {
     render() {
