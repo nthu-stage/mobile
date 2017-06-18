@@ -6,6 +6,7 @@
   "private": true,
   "main": "main.js",
   "dependencies": {
+    "color": "^1.0.3",
     "expo": "17.0.0",
     "native-base": "^2.1.5",
     "react": "16.0.0-alpha.6",
