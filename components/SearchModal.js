@@ -1,8 +1,6 @@
 import React from 'react';
 import {View, Modal} from 'react-native';
 
-import {connect} from 'react-redux';
-
 import {Container, Header, Button, Icon, Item, Input} from 'native-base';
 
 export default class SearchModal extends React.Component {

@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, ListView, Image, Modal, Alert} from 'react-native';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {View, Text, StyleSheet, ListView, Image, Alert} from 'react-native';
 import {
     Container,
     Header,
@@ -16,13 +18,12 @@ import {
     Card,
     CardItem,
     Thumbnail,
-    Item,
-    Input
 } from 'native-base';
 import IdeaItem from '../components/IdeaItem';
-import SearModal from '../components/SearchModal'
+import SearchModal from '../components/SearchModal'
+import { listIdea } from '../actions/idea'
 
-export default class IdeaScreen extends Component {
+class IdeaScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,6 +32,9 @@ export default class IdeaScreen extends Component {
             modalToggle: false,
             searchText:''
         };
+    }
+    componentWillMount(){
+        this.props.listIdea(this.state.searchText,this.state.order);
     }
     
     render() {
@@ -43,7 +47,7 @@ export default class IdeaScreen extends Component {
                         <Title>許願池</Title>
                     </Body>
                     <Right>
-                        <SearModal passbackSearchText={(e)=>this.setState({searchText:e})} />
+                        <SearchModal passbackSearchText={(e)=>this.setState({searchText:e})} />
                     </Right>
                      
                 </Header>
@@ -62,3 +66,15 @@ export default class IdeaScreen extends Component {
         );
     }
 }
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        listIdea,
+    }, dispatch);
+}
+function mapStateToProps({ ideaList }) {
+    return {
+        ideaList,
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(IdeaScreen);
