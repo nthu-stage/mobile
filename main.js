@@ -62,6 +62,10 @@ export const AppNavigator = TabNavigator({
             }
         })
     }
+}, {
+    navigationOptions: {
+        tabBarVisible: false
+    }
 });
 
 class AppWithStyleAndNavigator extends Component {
@@ -81,7 +85,7 @@ function mapStateToProps({nav}) {
 
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
 
-const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'workshopShow'}));
+const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'auth'}));
 const nav = (state = initialState, action) => {
     const nextState = AppNavigator.router.getStateForAction(action, state);
     return nextState || state;
