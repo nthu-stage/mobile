@@ -39,6 +39,8 @@ class IdeaScreen extends Component {
     
     render() {
         const { order, modalToggle, searchText } = this.state;
+        const ideas = this.props.ideaList;
+        console.log(ideas);
         return (
             <Container>
                 <Header>

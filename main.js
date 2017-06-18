@@ -19,6 +19,7 @@ import NewsScreen from './screens/NewsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import WorkshopListScreen from './screens/WorkshopListScreen';
 import IdeaListScreen from './screens/IdeaListScreen';
+import reducers from './reducers';
 
 export const AppNavigator = TabNavigator({
     auth: {
@@ -100,7 +101,7 @@ const nav = (state = initialState, action) => {
     return nextState || state;
 };
 
-const store = createStore(combineReducers({nav}), compose(applyMiddleware(thunkMiddleware)));
+const store = createStore(combineReducers({nav, reducers}), compose(applyMiddleware(thunkMiddleware)));
 
 class App extends Component {
     render() {
