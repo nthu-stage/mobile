@@ -12,6 +12,7 @@ import AuthScreen from './screens/AuthScreen';
 import WorkshopScreen from './screens/WorkshopScreen';
 import WorkshopShowScreen from './screens/WorkshopShowScreen';
 import IdeaScreen from './screens/IdeaScreen';
+import IdeaShowScreen from './screens/IdeaShowScreen';
 import NewsScreen from './screens/NewsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import WorkshopListScreen from './screens/WorkshopListScreen';
@@ -35,8 +36,15 @@ export const AppNavigator = TabNavigator({
                     }
                 }, {headerMode: 'none'})
             },
-            idea: {
-                screen: IdeaScreen
+            ideaStack: {
+                screen: StackNavigator({
+                    idea: {
+                        screen: IdeaScreen
+                    },
+                    ideaShow: {
+                        screen: IdeaShowScreen
+                    }
+                }, {headerMode: 'none'})
             },
             news: {
                 screen: NewsScreen
@@ -61,6 +69,10 @@ export const AppNavigator = TabNavigator({
                 })
             }
         })
+    }
+}, {
+    navigationOptions: {
+        tabBarVisible: false
     }
 });
 
