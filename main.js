@@ -14,6 +14,7 @@ import AuthScreen from './screens/AuthScreen';
 import WorkshopScreen from './screens/WorkshopScreen';
 import WorkshopShowScreen from './screens/WorkshopShowScreen';
 import IdeaScreen from './screens/IdeaScreen';
+import IdeaShowScreen from './screens/IdeaShowScreen';
 import NewsScreen from './screens/NewsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import WorkshopListScreen from './screens/WorkshopListScreen';
@@ -35,8 +36,15 @@ export const AppNavigator = TabNavigator({
                     }
                 }, {headerMode: 'none'})
             },
-            idea: {
-                screen: IdeaScreen
+            ideaStack: {
+                screen: StackNavigator({
+                    idea: {
+                        screen: IdeaScreen
+                    },
+                    ideaShow: {
+                        screen: IdeaShowScreen
+                    }
+                }, {headerMode: 'none'})
             },
             news: {
                 screen: NewsScreen
@@ -85,7 +93,7 @@ function mapStateToProps({nav}) {
 
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
 
-const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'workshop'}));
+const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'ideaShow'}));
 const nav = (state = initialState, action) => {
     const nextState = AppNavigator.router.getStateForAction(action, state);
     return nextState || state;
