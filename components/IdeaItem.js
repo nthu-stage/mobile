@@ -39,10 +39,10 @@ export default class IdeaItem extends Component {
                                 marginRight: 10,
                             }}>
                                 <Icon style={{
-                                    fontSize: 30,
+                                    fontSize: 24,
                                     color: 'red',
                                     textAlign: 'center'
-                                }} name='heart'/>
+                                }} name='heart-o'/>
                             </Col>
                             <Col style={{flex: 1, justifyContent: 'center'}}>
                                 <Text>我想學攝影</Text>

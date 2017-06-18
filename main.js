@@ -12,6 +12,7 @@ import thunkMiddleware from 'redux-thunk';
 import {TabNavigator, StackNavigator, NavigationActions, addNavigationHelpers} from 'react-navigation';
 import AuthScreen from './screens/AuthScreen';
 import WorkshopScreen from './screens/WorkshopScreen';
+import WorkshopShowScreen from './screens/WorkshopShowScreen';
 import IdeaScreen from './screens/IdeaScreen';
 import NewsScreen from './screens/NewsScreen';
 import ProfileScreen from './screens/ProfileScreen';
@@ -24,8 +25,15 @@ export const AppNavigator = TabNavigator({
     },
     main: {
         screen: TabNavigator({
-            workshop: {
-                screen: WorkshopScreen
+            workshopStack: {
+                screen: StackNavigator({
+                    workshop: {
+                        screen: WorkshopScreen
+                    },
+                    workshopShow: {
+                        screen: WorkshopShowScreen
+                    }
+                }, {headerMode: 'none'})
             },
             idea: {
                 screen: IdeaScreen
@@ -33,7 +41,7 @@ export const AppNavigator = TabNavigator({
             news: {
                 screen: NewsScreen
             },
-            profile: {
+            profileStack: {
                 screen: StackNavigator({
                     profile: {
                         screen: ProfileScreen
@@ -73,7 +81,7 @@ function mapStateToProps({nav}) {
 
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
 
-const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'idea'}));
+const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'workshopShow'}));
 const nav = (state = initialState, action) => {
     const nextState = AppNavigator.router.getStateForAction(action, state);
     return nextState || state;
