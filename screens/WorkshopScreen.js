@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, ListView, Image} from 'react-native';
+import {View, StyleSheet, ListView, Image} from 'react-native';
 import {
     Container,
     Header,
@@ -15,12 +15,12 @@ import {
     ListItem,
     Card,
     CardItem,
-    Thumbnail
+    Thumbnail,
+    Text
 } from 'native-base';
 import WorkshopItem from '../components/WorkshopItem';
 
 // https://github.com/GeekyAnts/NativeBase/issues/131#issuecomment-241969326
-
 export default class WorkshopScreen extends Component {
     constructor(props) {
         super(props);
@@ -51,7 +51,9 @@ export default class WorkshopScreen extends Component {
                         <Text>已達標</Text>
                     </Button>
                 </Segment>
-                <Content>
+                <Content style={{
+                    backgroundColor: 'white'
+                }}>
                     <List removeClippedSubviews={false} dataArray={this.state.dataSource} renderRow={(rowData) => <WorkshopItem/>}/>
                 </Content>
             </Container>
