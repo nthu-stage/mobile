@@ -62,6 +62,10 @@ export const AppNavigator = TabNavigator({
             }
         })
     }
+}, {
+    navigationOptions: {
+        tabBarVisible: false
+    }
 });
 
 class AppWithStyleAndNavigator extends Component {
