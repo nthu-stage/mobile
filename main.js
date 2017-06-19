@@ -95,14 +95,13 @@ function mapStateToProps({nav}) {
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
 
 
-const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'comeUpWithIdeaList'}));
+const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'idea'}));
 export const nav = (state = initialState, action) => {
     const nextState = AppNavigator.router.getStateForAction(action, state);
     return nextState || state;
 };
 
 const store = getStore(nav);
->>>>>>> master
 
 class App extends Component {
     render() {

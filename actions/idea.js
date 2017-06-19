@@ -6,7 +6,7 @@ export function listIdea(searchText, order) {
     return ((dispatch, getState) => {
         // dispatch(showLoading());
         listIdeaFromApi(null, searchText, order).then(res => {
-            dispatch({type: '@IDEA/LIST', payload: res.json()});
+            dispatch({type: '@IDEA/LIST', payload: res});
         }).catch(err => {
             
             // switch (err.response.status) {
