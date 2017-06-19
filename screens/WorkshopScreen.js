@@ -27,6 +27,10 @@ import WorkshopItem from '../components/WorkshopItem';
 
 // https://github.com/GeekyAnts/NativeBase/issues/131#issuecomment-241969326
 class WorkshopScreen extends Component {
+    static navigationOptions = {
+        tabBarLabel: '工作坊',
+        tabBarIcon: ({tintColor}) => <Icon style={{color: tintColor, fontSize: 24}} name='users'/>
+    };
     constructor(props) {
         super(props);
 
@@ -44,7 +48,6 @@ class WorkshopScreen extends Component {
         this.handleFilter = this.handleFilter.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
     }
-
     componentDidMount() {
         this.props.listWorkshop(this.state.searchText, this.state.stateFilter);
     }
