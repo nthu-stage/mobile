@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { listWorkshop } from '../actions/workshop';
-import { View, StyleSheet, ListView, Image } from 'react-native';
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {listWorkshop} from '../actions/workshop';
+import {View, StyleSheet, ListView, Image} from 'react-native';
 import {
     Container,
     Header,
@@ -25,6 +25,11 @@ import WorkshopItem from '../components/WorkshopItem';
 
 // https://github.com/GeekyAnts/NativeBase/issues/131#issuecomment-241969326
 class WorkshopScreen extends Component {
+    static navigationOptions = {
+        tabBarLabel: '工作坊',
+        tabBarIcon: ({tintColor}) => <Icon style={{color: tintColor, fontSize: 24}} name='users'/>
+    };
+
     componentDidMount() {
         this.props.listWorkshop();
         console.log(this.props.workshopList);
@@ -59,11 +64,11 @@ class WorkshopScreen extends Component {
                         {this.props.workshopList.map(workshop => <WorkshopItem key={workshop.w_id} {...workshop}/>)}
                     </Content>
                 </Container>
-              );
-          } else {
-              return <Container></Container>;
-          }
-     }
+            );
+        } else {
+            return <Container></Container>;
+        }
+    }
 }
 
 function mapStateToProps({workshopList}) {
