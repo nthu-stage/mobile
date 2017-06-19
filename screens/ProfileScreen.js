@@ -20,6 +20,11 @@ import {LinearGradient, BlurView} from 'expo';
 const {width, height} = Dimensions.get('window');
 
 export default class ProfileScreen extends Component {
+    static navigationOptions = {
+        tabBarLabel: '個人',
+        tabBarIcon: ({tintColor}) => <Icon style={{color: tintColor, fontSize: 24}} name='user-circle-o'/>
+    };
+
     render() {
         const {
             avatarContainer,
