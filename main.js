@@ -69,7 +69,7 @@ export const AppNavigator = TabNavigator({
                     }
                 }, {headerMode: 'none'})
             }
-        })
+        }, {lazy: true})
     }
 }, {
     navigationOptions: {
@@ -94,8 +94,6 @@ function mapStateToProps({nav}) {
 }
 
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
-
-
 
 const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'ideaStack'}));
 export const nav = (state = initialState, action) => {
