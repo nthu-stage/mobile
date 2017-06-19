@@ -18,6 +18,11 @@ import {
 import NewsItem from '../components/NewsItem';
 
 export default class NewsScreen extends Component {
+    static navigationOptions = {
+        tabBarLabel: '動態',
+        tabBarIcon: ({tintColor}) => <Icon style={{color: tintColor, fontSize: 24}} name='newspaper-o'/>
+    };
+
     constructor(props) {
         super(props);
 

@@ -24,6 +24,11 @@ import SearchModal from '../components/SearchModal'
 import { listIdea } from '../actions/idea'
 
 class IdeaScreen extends Component {
+    static navigationOptions = {
+        tabBarLabel: '許願池',
+        tabBarIcon: ({tintColor}) => <Icon style={{color: tintColor, fontSize: 24}} name='gift'/>
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -36,7 +41,7 @@ class IdeaScreen extends Component {
     componentWillMount(){
         this.props.listIdea(this.state.searchText,this.state.order);
     }
-    
+
     render() {
         const { order, modalToggle, searchText } = this.state;
         const ideas = this.props.ideaList;
@@ -51,7 +56,7 @@ class IdeaScreen extends Component {
                     <Right>
                         <SearchModal passbackSearchText={(e)=>this.setState({searchText:e})} />
                     </Right>
-                     
+
                 </Header>
                 <Segment>
                     <Button first active={order==="hot"} onPress={()=>{this.setState({order:'hot'})}}>
@@ -61,7 +66,9 @@ class IdeaScreen extends Component {
                         <Text>最新</Text>
                     </Button>
                 </Segment>
-                <Content>
+                <Content style={{
+                    backgroundColor: '#f6f7f9'
+                }}>
                     <List removeClippedSubviews={false} dataArray={this.state.dataSource} renderRow={(rowData) => <IdeaItem/>}/>
                 </Content>
             </Container>

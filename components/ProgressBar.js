@@ -14,18 +14,16 @@ export default class ProgressBar extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        marginTop: 10,
-        marginBottom: 10,
+        height: 3,
+        marginTop: 15,
+        marginBottom: 15,
     },
     bg: {
-        flex: 1,
         backgroundColor: '#ccc',
         height: 3,
         position: 'relative'
     },
     fg: {
-        flex: 1,
         backgroundColor: 'red',
         height: 3,
         width: '50%',
