@@ -1,20 +1,35 @@
 import React, {Component} from 'react';
 import {Video, Asset, AppLoading} from 'expo';
-import {View, StyleSheet, Dimensions} from 'react-native';
+import {View, StyleSheet, Dimensions, AsyncStorage} from 'react-native';
 import {Container, Content, Text, Icon, Button} from 'native-base';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+
+import {facebookLogin} from '../actions/auth';
 
 const videoSource = require('../assets/video/auth.mp4');
 const {width, height} = Dimensions.get('window');
 
-export default class AuthScreen extends Component {
+class AuthScreen extends Component {
     constructor(props) {
         super(props);
+
+        // AsyncStorage.removeItem('fb');
 
         this.mountVideo = this.mountVideo.bind(this);
         this.onPressLogin = this.onPressLogin.bind(this);
         this.state = {
             loading: null
         }
+    }
+
+    componentDidMount() {
+        this.props.facebookLogin();
+        this.onAuthComplete(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.onAuthComplete(nextProps);
     }
 
     async loadNewPlaybackInstance() {
@@ -32,7 +47,14 @@ export default class AuthScreen extends Component {
     }
 
     onPressLogin() {
-        this.props.navigation.navigate('workshopStack')
+        this.props.facebookLogin(true);
+        this.onAuthComplete(this.props);
+    }
+
+    onAuthComplete(props) {
+        if (props.accessToken) {
+            this.props.navigation.navigate('workshopStack');
+        }
     }
 
     render() {
@@ -109,3 +131,15 @@ const styles = {
         fontWeight: 'bold'
     }
 };
+
+function mapStateToProps({auth}) {
+    return {accessToken: auth.accessToken};
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        facebookLogin
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);

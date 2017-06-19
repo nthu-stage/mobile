@@ -5,6 +5,7 @@ import AlertReducer from './reducer_alert';
 
 import {WorkshopListReducer, WorkshopShowReducer} from './reducer_workshop';
 import { IdeaListReducer } from './reducer_idea';
+import {FacebookLoginReducer} from './reducer_auth';
 
 export default function getStore(nav) {
     const store = createStore(combineReducers({
@@ -13,6 +14,7 @@ export default function getStore(nav) {
         loadingBar: loadingBarReducer,
         workshopList: WorkshopListReducer,
         ideaList:IdeaListReducer,
+        auth: FacebookLoginReducer,
         workshopShow: WorkshopShowReducer
     }), compose(applyMiddleware(thunkMiddleware)));
 
