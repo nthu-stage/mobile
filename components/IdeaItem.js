@@ -32,17 +32,33 @@ export default class IdeaItem extends Component {
         super(props);
         this.handlePress = this.handlePress.bind(this);
         this.handleLike = this.handleLike.bind(this);
+
+        this.state = {
+            uri:'https://i.imgur.com/FmTsK1v.jpg',
+            idea_type:'teach',
+            skill:'攝影',
+            goal:'希望可以用影像留住生命中的美好事物',
+            like_number: 31,
+            liked:true,
+        }
     }
     handlePress() {
-        Alert.alert('Picture has been pressed.');
+        console.log(this.props.navigation);
+        this.props.navigation.navigate('ideaShow',{i_id:this.props.i_id});
     }
-    handleLike() {
+    handleLike(e) {
         Alert.alert('Like has been pressed.',);
+        e.stopPropagation();
+        //this.props.likeSearchIdea(this.props.i_id);
 
     }
 
     render() {
+        const { uri, idea_type, skill, goal, like_number, liked }=this.props.content;
+        const _uri = uri? uri: this.state.uri;
+        console.log(this.props);
         return (
+            <TouchableOpacity onPress={this.handlePress}>
             <View style={{
                 flex: 1,
                 flexDirection: 'row',
@@ -58,26 +74,24 @@ export default class IdeaItem extends Component {
                 },
                 shadowOpacity: 0.15,
                 shadowRadius: 3
-            }}>
+            }}>               
                 <View>
-                    <TouchableOpacity onPress={this.handlePress}>
-                        <Image style={{
-                            resizeMode: 'cover',
-                            height: 100,
-                            width: 100,
-                            borderRadius: 10,
-                            marginRight: 10
-                        }} source={{
-                            uri: 'https://i.imgur.com/FmTsK1v.jpg'
-                        }}/>
-                        <LinearGradient locations={[0, 1]} colors={['rgba(255, 255, 255, 0)', 'black']} style={{
-                            position: 'absolute',
-                            width: 100,
-                            height: 100,
-                            borderRadius: 10,
-                            opacity: 0.3
-                        }}/>
-                    </TouchableOpacity>
+                    <Image style={{
+                        resizeMode: 'cover',
+                        height: 100,
+                        width: 100,
+                        borderRadius: 10,
+                        marginRight: 10
+                    }} source={{
+                        uri: _uri,
+                    }}/>
+                    <LinearGradient locations={[0, 1]} colors={['rgba(255, 255, 255, 0)', 'black']} style={{
+                        position: 'absolute',
+                        width: 100,
+                        height: 100,
+                        borderRadius: 10,
+                        opacity: 0.3
+                    }}/>
                     <TouchableOpacity onPress={this.handleLike}>
                         <View style={{
                             flexDirection: 'row',
@@ -97,7 +111,7 @@ export default class IdeaItem extends Component {
                             <Text style={{
                                 color: 'white'
                             }}>
-                                31
+                                {like_number}
                             </Text>
                         </View>
                     </TouchableOpacity>
@@ -110,14 +124,15 @@ export default class IdeaItem extends Component {
                     <Text style={{
                         fontSize: 18,
                         marginBottom: 6
-                    }}>我想學攝影</Text>
+                    }}>{`${idea_type==='teach'?'我想教':'我想學'}${skill}`}</Text>
                     <Text style={{
                         fontSize: 14,
                         lineHeight: 18,
                         color: 'gray'
-                    }}>希望可以隨時拿起手機紀錄身邊的美好的事物</Text>
+                    }}>{goal}</Text>
                 </View>
             </View>
+            </TouchableOpacity>
         );
     }
 }

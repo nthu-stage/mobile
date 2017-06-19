@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Image, Dimensions} from 'react-native';
+import {View, StyleSheet, Image, Dimensions, TouchableOpacity, Alert} from 'react-native';
 import {
     Container,
     Content,
@@ -17,7 +17,12 @@ export default class IdeaShowScreen extends Component {
         tabBarLabel: '許願池',
         tabBarIcon: ({tintColor}) => <Icon style={{color: tintColor, fontSize: 24}} name='gift'/>
     };
+    handleLike(e) {
+        Alert.alert('Like has been pressed.',);
+        e.stopPropagation();
+        //this.props.likeSearchIdea(this.props.i_id);
 
+    }
     render() {
         const {bannerBackground, bannerTitle, authorContainer, authorImageContainer, authorImage, likeContainer} = styles;
         return (
@@ -31,6 +36,30 @@ export default class IdeaShowScreen extends Component {
                     uri: 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
                 }}/>
                 <View style={bannerBackground} />
+                
+                <View style={bannerTitle}>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: 30,
+                        lineHeight: 36,
+                        marginBottom: 8,
+                    }}>我想學畫畫</Text>
+                    <Text style={{
+                        color: 'white',
+                        fontSize: 20,
+                        lineHeight: 24,
+                    }}>初階人像攝影工作坊，從基本觀念、拍攝所需至燈光運用，完整流程深入淺出一次瞭解。</Text>
+                </View>
+                <View style={likeContainer}>
+                    <Button danger rounded onPress={(e)=>this.handleLike(e)}>
+                        <Icon name="heart" />
+                    </Button>
+                    <Text style={{
+                        color: 'white',
+                        marginLeft: 10,
+                        fontSize: 20
+                    }}>31 人喜歡</Text>
+                </View>
                 <View style={{
                     flex: 1,
                     flexDirection: 'row',
@@ -55,32 +84,9 @@ export default class IdeaShowScreen extends Component {
                             fontSize: 24
                         }}>賴詰凱</Text>
                     </View>
-                    <Icon name="close" style={{
-                        color: 'white'
-                    }}/>
-                </View>
-                <View style={bannerTitle}>
-                    <Text style={{
-                        color: 'white',
-                        fontSize: 30,
-                        lineHeight: 36,
-                        marginBottom: 8,
-                    }}>我想學畫畫</Text>
-                    <Text style={{
-                        color: 'white',
-                        fontSize: 20,
-                        lineHeight: 24,
-                    }}>初階人像攝影工作坊，從基本觀念、拍攝所需至燈光運用，完整流程深入淺出一次瞭解。</Text>
-                </View>
-                <View style={likeContainer}>
-                    <Button danger rounded>
-                        <Icon name="heart" />
-                    </Button>
-                    <Text style={{
-                        color: 'white',
-                        marginLeft: 10,
-                        fontSize: 20
-                    }}>31 人喜歡</Text>
+                    <TouchableOpacity onPress={()=>this.props.navigation.goBack()}>
+                        <Icon name="close" style={{color:'white'}}/>
+                    </TouchableOpacity>
                 </View>
             </View>
         );

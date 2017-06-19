@@ -2,7 +2,9 @@ import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import {loadingBarReducer} from 'react-redux-loading-bar';
 import AlertReducer from './reducer_alert';
-import {WorkshopListReducer} from './reducer_workshop';
+
+import {WorkshopListReducer, WorkshopShowReducer} from './reducer_workshop';
+import { IdeaListReducer } from './reducer_idea';
 import {FacebookLoginReducer} from './reducer_auth';
 
 export default function getStore(nav) {
@@ -11,7 +13,9 @@ export default function getStore(nav) {
         alert: AlertReducer,
         loadingBar: loadingBarReducer,
         workshopList: WorkshopListReducer,
+        ideaList:IdeaListReducer,
         auth: FacebookLoginReducer,
+        workshopShow: WorkshopShowReducer
     }), compose(applyMiddleware(thunkMiddleware)));
 
     return store;

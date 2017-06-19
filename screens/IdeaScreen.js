@@ -45,6 +45,7 @@ class IdeaScreen extends Component {
     render() {
         const { order, modalToggle, searchText } = this.state;
         const ideas = this.props.ideaList;
+        console.log("here is ideaScreen")
         console.log(ideas);
         return (
             <Container>
@@ -69,7 +70,7 @@ class IdeaScreen extends Component {
                 <Content style={{
                     backgroundColor: '#f6f7f9'
                 }}>
-                    <List removeClippedSubviews={false} dataArray={this.state.dataSource} renderRow={(rowData) => <IdeaItem/>}/>
+                    <List removeClippedSubviews={false} dataArray={ideas} renderRow={(idea) => <IdeaItem content={idea} navigation={this.props.navigation} />}/>
                 </Content>
             </Container>
         );

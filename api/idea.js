@@ -20,6 +20,8 @@ export function listIdea(fb, searchText, order, offset, limit) {
             }
         })
     } else {
-        return fetch(url)
+        return fetch(url).then(res=>{
+            return res.json();
+        })
     }
 }
