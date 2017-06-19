@@ -66,7 +66,9 @@ class IdeaScreen extends Component {
                         <Text>最新</Text>
                     </Button>
                 </Segment>
-                <Content>
+                <Content style={{
+                    backgroundColor: '#f6f7f9'
+                }}>
                     <List removeClippedSubviews={false} dataArray={this.state.dataSource} renderRow={(rowData) => <IdeaItem/>}/>
                 </Content>
             </Container>
