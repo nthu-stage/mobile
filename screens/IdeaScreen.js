@@ -1,11 +1,19 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {View, Text, StyleSheet, ListView, Image, Alert} from 'react-native';
+import {
+    View,
+    ScrollView,
+    StyleSheet,
+    ListView,
+    Image,
+    Alert
+} from 'react-native';
 import {
     Container,
     Header,
     Left,
+    Text,
     Body,
     Title,
     Right,
@@ -17,33 +25,36 @@ import {
     ListItem,
     Card,
     CardItem,
-    Thumbnail,
+    Thumbnail
 } from 'native-base';
 import IdeaItem from '../components/IdeaItem';
 import SearchModal from '../components/SearchModal'
-import { listIdea } from '../actions/idea'
+import {listIdea} from '../actions/idea'
 
 class IdeaScreen extends Component {
     static navigationOptions = {
         tabBarLabel: '許願池',
-        tabBarIcon: ({tintColor}) => <Icon style={{color: tintColor, fontSize: 24}} name='gift'/>
+        tabBarIcon: ({tintColor}) => <Icon style={{
+                color: tintColor,
+                fontSize: 24
+            }} name='gift'/>
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: [1, 2, 3, 4],
-            order:'new',
+            order: 'new',
             modalToggle: false,
-            searchText:''
+            searchText: ''
         };
     }
-    componentWillMount(){
-        this.props.listIdea(this.state.searchText,this.state.order);
+
+    componentWillMount() {
+        this.props.listIdea(this.state.searchText, this.state.order);
     }
 
     render() {
-        const { order, modalToggle, searchText } = this.state;
+        const {order, modalToggle, searchText} = this.state;
         const ideas = this.props.ideaList;
         console.log("here is ideaScreen")
         console.log(ideas);
@@ -55,36 +66,40 @@ class IdeaScreen extends Component {
                         <Title>許願池</Title>
                     </Body>
                     <Right>
-                        <SearchModal passbackSearchText={(e)=>this.setState({searchText:e})} />
+                        <SearchModal passbackSearchText={(e) => this.setState({searchText: e})}/>
                     </Right>
 
                 </Header>
                 <Segment>
-                    <Button first active={order==="hot"} onPress={()=>{this.setState({order:'hot'})}}>
+                    <Button first active={order === "hot"} onPress={() => {
+                        this.setState({order: 'hot'})
+                    }}>
                         <Text>熱門</Text>
                     </Button>
-                    <Button last active={order==="new"} onPress={()=>{this.setState({order:'new'})}}>
+                    <Button last active={order === "new"} onPress={() => {
+                        this.setState({order: 'new'})
+                    }}>
                         <Text>最新</Text>
                     </Button>
                 </Segment>
-                <Content style={{
-                    backgroundColor: '#f6f7f9'
+                <ScrollView style={{
+                    flex: 1
                 }}>
-                    <List removeClippedSubviews={false} dataArray={ideas} renderRow={(idea) => <IdeaItem content={idea} navigation={this.props.navigation} />}/>
-                </Content>
+                    <List removeClippedSubviews={false} dataArray={ideas} renderRow={(idea) => <IdeaItem content={idea} navigation={this.props.navigation}/>}/>
+                </ScrollView>
             </Container>
         );
     }
 }
 
+function mapStateToProps({ideaList}) {
+    return {ideaList}
+}
+
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        listIdea,
+        listIdea
     }, dispatch);
 }
-function mapStateToProps({ ideaList }) {
-    return {
-        ideaList,
-    }
-}
+
 export default connect(mapStateToProps, mapDispatchToProps)(IdeaScreen);
