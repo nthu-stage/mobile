@@ -1,5 +1,13 @@
 import React, {Component} from 'react';
-import {View, Image, StyleSheet, TouchableOpacity, AlertIOS, Alert} from 'react-native';
+import {
+    View,
+    Image,
+    StyleSheet,
+    TouchableOpacity,
+    AlertIOS,
+    Alert
+} from 'react-native';
+import {LinearGradient} from 'expo';
 import {
     Container,
     Content,
@@ -18,74 +26,113 @@ import {
     Row,
     ListItem
 } from 'native-base';
-import Diveder from './Diveder';
 
 export default class IdeaItem extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.handlePress = this.handlePress.bind(this);
         this.handleLike = this.handleLike.bind(this);
+
+        this.state = {
+            uri:'https://i.imgur.com/FmTsK1v.jpg',
+            idea_type:'teach',
+            skill:'攝影',
+            goal:'希望可以用影像留住生命中的美好事物',
+            like_number: 31,
+            liked:true,
+        }
     }
-    handlePress(){
-        Alert.alert(
-        'Picture has been pressed.'
-        );
+    handlePress() {
+        console.log(this.props.navigation);
+        this.props.navigation.navigate('ideaShow',{i_id:this.props.i_id});
     }
-    handleLike(){
-        Alert.alert(
-        'Like has been pressed.',
-        );
-        
+    handleLike(e) {
+        Alert.alert('Like has been pressed.',);
+        e.stopPropagation();
+        //this.props.likeSearchIdea(this.props.i_id);
+
     }
-    
+
     render() {
+        const { uri, idea_type, skill, goal, like_number, liked }=this.props.content;
+        const _uri = uri? uri: this.state.uri;
+        console.log(this.props);
         return (
-            <Content>
-                <TouchableOpacity onPress={this.handlePress}>
+            <TouchableOpacity onPress={this.handlePress}>
+            <View style={{
+                flex: 1,
+                flexDirection: 'row',
+                backgroundColor: 'white',
+                margin: 10,
+                marginBottom: 0,
+                padding: 10,
+                borderRadius: 10,
+                shadowColor: 'gray',
+                shadowOffset: {
+                    width: 0,
+                    height: 2
+                },
+                shadowOpacity: 0.15,
+                shadowRadius: 3
+            }}>               
+                <View>
                     <Image style={{
                         resizeMode: 'cover',
-                        height: 180,
-                        width: null
+                        height: 100,
+                        width: 100,
+                        borderRadius: 10,
+                        marginRight: 10
                     }} source={{
-                        uri: 'https://i.imgur.com/FmTsK1v.jpg'
+                        uri: _uri,
                     }}/>
-                </TouchableOpacity>
-                <Content padder>
-                    <Grid>
-                        <Row>
-                            <Col style={{
-                                width: 30,
-                                marginRight: 10,
+                    <LinearGradient locations={[0, 1]} colors={['rgba(255, 255, 255, 0)', 'black']} style={{
+                        position: 'absolute',
+                        width: 100,
+                        height: 100,
+                        borderRadius: 10,
+                        opacity: 0.3
+                    }}/>
+                    <TouchableOpacity onPress={this.handleLike}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            position: 'absolute',
+                            left: 6,
+                            bottom: 6,
+                            backgroundColor: 'rgba(255, 255, 255, 0)'
+                        }}>
+                            <Icon style={{
+                                fontSize: 24,
+                                color: 'white',
+                                textAlign: 'center',
+                                marginRight: 6
+                            }} name='heart'/>
+
+                            <Text style={{
+                                color: 'white'
                             }}>
-                                <TouchableOpacity onPress={this.handleLike}>
-                                    <Icon style={{
-                                        fontSize: 24,
-                                        color: 'red',
-                                        textAlign: 'center'
-                                    }} name='heart-o'/>
-                                </TouchableOpacity>
-                            </Col>
-                            <Col style={{flex: 1, justifyContent: 'center'}}>
-                                <Text>我想學攝影</Text>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col style={{
-                                width: 30,
-                                marginRight: 10,
-                            }}>
-                                <Text note style={{textAlign: 'center'}}>12</Text>
-                            </Col>
-                            <Col style={{flex: 1, justifyContent: 'center'}}>
-                                <Text note>希望可以隨時拿起手機紀錄身邊的美好的事物</Text>
-                            </Col>
-                        </Row>
-                    </Grid>
-                </Content>
+                                {like_number}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
                 <View style={{
-                    marginBottom: 30
-                }}/>
-            </Content>
+                    flex: 1,
+                    paddingTop: 10,
+                    paddingBottom: 10
+                }}>
+                    <Text style={{
+                        fontSize: 18,
+                        marginBottom: 6
+                    }}>{`${idea_type==='teach'?'我想教':'我想學'}${skill}`}</Text>
+                    <Text style={{
+                        fontSize: 14,
+                        lineHeight: 18,
+                        color: 'gray'
+                    }}>{goal}</Text>
+                </View>
+            </View>
+            </TouchableOpacity>
         );
     }
 }

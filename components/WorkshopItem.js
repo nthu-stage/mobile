@@ -19,7 +19,6 @@ import {
     ListItem
 } from 'native-base';
 import ProgressBar from './ProgressBar';
-import Diveder from './Diveder';
 
 export default class WorkshopItem extends Component {
     constructor(props) {
