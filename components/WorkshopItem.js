@@ -22,7 +22,24 @@ import ProgressBar from './ProgressBar';
 import Diveder from './Diveder';
 
 export default class WorkshopItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.handlePressImage = this.handlePressImage.bind(this);
+    }
+
     render() {
+        const {
+            title,
+            min_number,
+            max_number,
+            deadline,
+            pre_deadline,
+            introduction,
+            price,
+            phase,
+            attendees_number
+        } = this.props;
         return (
             <Content>
                 <Image style={{
@@ -37,10 +54,10 @@ export default class WorkshopItem extends Component {
                         <Row>
                             <Col>
                                 <Row>
-                                    <Text>文字工作坊</Text>
+                                    <Text>{title}</Text>
                                 </Row>
                                 <Row>
-                                    <Text note>重組文字，表達情感，點出故事賣點！</Text>
+                                    <Text note>{introduction}</Text>
                                 </Row>
                             </Col>
                         </Row>
@@ -52,7 +69,7 @@ export default class WorkshopItem extends Component {
                         <Row>
                             <Col>
                                 <Row>
-                                    <Text>68%</Text>
+                                    <Text>{`${attendees_number/min_number}%`}</Text>
                                 </Row>
                                 <Row>
                                     <Text note>達標</Text>
@@ -60,7 +77,7 @@ export default class WorkshopItem extends Component {
                             </Col>
                             <Col>
                                 <Row>
-                                    <Text>50</Text>
+                                    <Text>{`${price}`}</Text>
                                 </Row>
                                 <Row>
                                     <Text note>元</Text>
@@ -80,5 +97,9 @@ export default class WorkshopItem extends Component {
                 <View style={{marginBottom: 30}}/>
             </Content>
         );
+    }
+
+    handlePressImage() {
+        // this.props.navigation.navigate('PostForm');
     }
 }

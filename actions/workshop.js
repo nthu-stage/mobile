@@ -1,4 +1,4 @@
-// import {showLoading, hideLoading} from 'react-redux-loading-bar';
+import {showLoading, hideLoading} from 'react-redux-loading-bar';
 import {deliverAlert} from './common';
 import {
     listWorkshop as listWorkshopFromApi
@@ -12,7 +12,7 @@ const fb = {
 
 export function listWorkshop(searchText, stateFilter) {
     return ((dispatch, getState) => {
-        // dispatch(showLoading());
+        dispatch(showLoading());
         listWorkshopFromApi(fb, searchText, stateFilter).then(res => {
             dispatch({type: '@WORKSHOP/LIST', payload: res});
         }).catch(err => {
@@ -23,6 +23,8 @@ export function listWorkshop(searchText, stateFilter) {
                 default:
                     dispatch(deliverAlert('搜尋失敗', 'danger', 3000));
             }
+        }).then(() => {
+            dispatch(hideLoading());
         });
     });
 }
