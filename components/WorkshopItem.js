@@ -22,7 +22,24 @@ import ProgressBar from './ProgressBar';
 import Diveder from './Diveder';
 
 export default class WorkshopItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.handlePressImage = this.handlePressImage.bind(this);
+    }
+
     render() {
+        const {
+            title,
+            min_number,
+            max_number,
+            deadline,
+            pre_deadline,
+            introduction,
+            price,
+            phase,
+            attendees_number
+        } = this.props;
         return (
             <View>
                 <Image style={{
@@ -79,5 +96,9 @@ export default class WorkshopItem extends Component {
                 </View>
             </View>
         );
+    }
+
+    handlePressImage() {
+        // this.props.navigation.navigate('PostForm');
     }
 }
