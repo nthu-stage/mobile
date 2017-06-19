@@ -18,7 +18,6 @@ import {
     Title,
     Right,
     Content,
-    Segment,
     Button,
     Icon,
     List,
@@ -27,9 +26,11 @@ import {
     CardItem,
     Thumbnail
 } from 'native-base';
+import Navbar from '../components/Navbar';
+import Segment from '../components/Segment';
 import IdeaItem from '../components/IdeaItem';
-import SearchModal from '../components/SearchModal'
-import {listIdea} from '../actions/idea'
+import SearchModal from '../components/SearchModal';
+import {listIdea} from '../actions/idea';
 
 class IdeaScreen extends Component {
     static navigationOptions = {
@@ -42,6 +43,7 @@ class IdeaScreen extends Component {
 
     constructor(props) {
         super(props);
+        this.onUpdate = this.onUpdate.bind(this);
         this.state = {
             order: 'new',
             modalToggle: false,
@@ -53,44 +55,40 @@ class IdeaScreen extends Component {
         this.props.listIdea(this.state.searchText, this.state.order);
     }
 
+    onUpdate(order) {
+        if (order[0]) {
+            this.setState({order: 'hot'})
+        } else {
+            this.setState({order: 'new'})
+        }
+    }
+
     render() {
         const {order, modalToggle, searchText} = this.state;
         const ideas = this.props.ideaList;
-        console.log("here is ideaScreen")
-        console.log(ideas);
-        return (
-            <Container>
-                <Header>
-                    <Left></Left>
-                    <Body>
-                        <Title>許願池</Title>
-                    </Body>
-                    <Right>
-                        <SearchModal passbackSearchText={(e) => this.setState({searchText: e})}/>
-                    </Right>
 
-                </Header>
-                <Segment>
-                    <Button first active={order === "hot"} onPress={() => {
-                        this.setState({order: 'hot'})
-                    }}>
-                        <Text>熱門</Text>
-                    </Button>
-                    <Button last active={order === "new"} onPress={() => {
-                        this.setState({order: 'new'})
-                    }}>
-                        <Text>最新</Text>
-                    </Button>
-                </Segment>
+        return (
+            <View style={styles.container}>
+                <Navbar title="許願池" right={< SearchModal passbackSearchText = {
+                    e => this.setState({searchText: e})
+                } />}/>
+                <Segment left="熱門" right="最新" onUpdate={this.onUpdate}/>
                 <ScrollView style={{
                     flex: 1
                 }}>
                     <List removeClippedSubviews={false} dataArray={ideas} renderRow={(idea) => <IdeaItem content={idea} navigation={this.props.navigation}/>}/>
                 </ScrollView>
-            </Container>
+            </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fcfcfc'
+    }
+})
 
 function mapStateToProps({ideaList}) {
     return {ideaList}

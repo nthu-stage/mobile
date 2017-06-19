@@ -64,7 +64,7 @@ export default class IdeaItem extends Component {
                 flexDirection: 'row',
                 backgroundColor: 'white',
                 margin: 10,
-                marginBottom: 0,
+                marginTop: 0,
                 padding: 10,
                 borderRadius: 10,
                 shadowColor: 'gray',
@@ -74,7 +74,7 @@ export default class IdeaItem extends Component {
                 },
                 shadowOpacity: 0.15,
                 shadowRadius: 3
-            }}>               
+            }}>
                 <View>
                     <Image style={{
                         resizeMode: 'cover',
