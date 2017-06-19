@@ -26,7 +26,6 @@ import {
     Row,
     ListItem
 } from 'native-base';
-import Diveder from './Diveder';
 
 export default class IdeaItem extends Component {
     constructor(props) {
