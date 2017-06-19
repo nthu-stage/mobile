@@ -102,7 +102,7 @@ export const nav = (state = initialState, action) => {
 };
 
 const store = getStore(nav);
-
+>>>>>>> master
 
 class App extends Component {
     render() {
