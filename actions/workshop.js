@@ -1,7 +1,8 @@
 import {showLoading, hideLoading} from 'react-redux-loading-bar';
 import {deliverAlert} from './common';
 import {
-    listWorkshop as listWorkshopFromApi
+    listWorkshop as listWorkshopFromApi,
+    showWorkshop as showWorkshopFromApi
 } from '../api/workshop';
 
 const fb = {
@@ -22,6 +23,28 @@ export function listWorkshop(searchText, stateFilter) {
                     break;
                 default:
                     dispatch(deliverAlert('搜尋失敗', 'danger', 3000));
+            }
+        }).then(() => {
+            dispatch(hideLoading());
+        });
+    });
+}
+
+export function showWorkshop(w_id) {
+    return ((dispatch, getState) => {
+        dispatch(showLoading());
+        showWorkshopFromApi(fb, w_id).then(res => {
+            dispatch({type: '@WORKSHOP/SHOW', payload: res});
+        }).catch(err => {
+            switch (err.response.status) {
+                case 400:
+                    dispatch(deliverAlert('工作坊不存在', 'danger', 3000));
+                    break;
+                case 401:
+                    dispatch(deliverAlert('請先登入', 'warning', 3000));
+                    break;
+                default:
+                    dispatch(deliverAlert('讀取失敗', 'danger', 3000));
             }
         }).then(() => {
             dispatch(hideLoading());
