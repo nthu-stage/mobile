@@ -2,11 +2,15 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
 export default class ProgressBar extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.bg} />
-                <View style={styles.fg} />
+                <View style={[styles.fg, {width: `${this.props.percent}%`}]} />
             </View>
         );
     }
