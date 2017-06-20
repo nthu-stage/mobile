@@ -20,6 +20,7 @@ import {
 } from 'native-base';
 import {LinearGradient} from 'expo';
 import {showIdea} from '../actions/idea';
+import { likeViewEditIdea } from '../actions/idea'
 
 const {width, height} = Dimensions.get('window');
 
@@ -44,14 +45,12 @@ class IdeaShowScreen extends Component {
         }
     }
     componentWillMount(){
-        console.log(this.props.navigation)
         this.props.showIdea(this.props.navigation.state.params.i_id);
         
     }
     handleLike(e) {
-        Alert.alert('Like has been pressed.',);
         e.stopPropagation();
-        //this.props.likeSearchIdea(this.props.i_id);
+        this.props.likeViewEditIdea(this.props.navigation.state.params.i_id);
 
     }
     render() {
@@ -94,7 +93,7 @@ class IdeaShowScreen extends Component {
                 </View>
                 <View style={likeContainer}>
                     <Button danger rounded onPress={(e) => this.handleLike(e)}>
-                        <Icon name="heart"/>
+                        <Icon name="heart" style={{color:liked?'yellow':'white'}} />
                     </Button>
                     <Text style={{
                         color: 'white',
@@ -139,26 +138,22 @@ class IdeaShowScreen extends Component {
         );
     }
 }
-IdeaShowScreen.defaultProps = {
-    goal:"b",
-    i_id:8,
-    idea_type:"learn",
-    like_number:0,
-    name:"賴詰凱",
-    picture_url:"https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/18622427_1859238271067164_3869120362467491071_n.jpg?oh=681ac9d57e2917e97ce9d25f027b76d4&oe=59D96830",
-    skill:"a",
-}
+
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         showIdea,
+        likeViewEditIdea
     }, dispatch);
 }
 function mapStateToProps({ ideaShow }) {
     return {
         ideaShow,
+        
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(IdeaShowScreen);
+
+
 
 const styles = {
     bannerBackground: {
