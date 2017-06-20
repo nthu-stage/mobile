@@ -4,7 +4,30 @@ const signedRequest = 'GvbV-X3K-8j041Bw_U3SDSG6vECGGvFaB6m2dvD0PQQ.eyJhbGdvcml0a
 
 export function listWorkshop(fb, searchText = "", stateFilter) {
     stateFilter = 'all';
+    let url = `${baseUrl}/workshops?searchText=${searchText}&stateFilter=${stateFilter}&offset=${0}&limit=${3}`;
+    let {userID, accessToken} = fb;
+    return fetch(url, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            userID,
+            signedRequest,
+            accessToken
+        }
+    });
+}
+
+export function listMoreWorkshop(fb, searchText = "", stateFilter, offset, limit) {
+    stateFilter = 'all';
     let url = `${baseUrl}/workshops?searchText=${searchText}&stateFilter=${stateFilter}`;
+    if(offset){
+        url+='&offset=';
+        url+=`${offset}`;
+    }
+    if(limit){
+        url+='&limit=';
+        url+=`${limit}`;
+    }
     let {userID, accessToken} = fb;
     return fetch(url, {
         headers: {
