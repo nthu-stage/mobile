@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {
     View,
     StyleSheet,
@@ -17,9 +19,11 @@ import {
     Button
 } from 'native-base';
 import {LinearGradient} from 'expo';
+import {showIdea} from '../actions/idea';
+
 const {width, height} = Dimensions.get('window');
 
-export default class IdeaShowScreen extends Component {
+class IdeaShowScreen extends Component {
     static navigationOptions = {
         tabBarLabel: '許願池',
         tabBarIcon: ({tintColor}) => <Icon style={{
@@ -27,6 +31,23 @@ export default class IdeaShowScreen extends Component {
                 fontSize: 24
             }} name='gift'/>
     };
+    constructor(props){
+        super(props);
+
+        this.state = {
+            picture_url: "https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/18622427_1859238271067164_3869120362467491071_n.jpg?oh=681ac9d57e2917e97ce9d25f027b76d4&oe=59D96830",
+            idea_type: 'teach',
+            skill:'a' ,
+            goal:'a' ,
+            like_number:'9487',
+            liked:true
+        }
+    }
+    componentWillMount(){
+        console.log(this.props.navigation)
+        this.props.showIdea(this.props.navigation.state.params.i_id);
+        
+    }
     handleLike(e) {
         Alert.alert('Like has been pressed.',);
         e.stopPropagation();
@@ -34,6 +55,9 @@ export default class IdeaShowScreen extends Component {
 
     }
     render() {
+        console.log("show screen")
+        console.log(this.props.ideaShow);
+        const { picture_url, idea_type, skill, goal, like_number, liked, image_url, name}=this.props.ideaShow? this.props.ideaShow:this.state;
         const {
             bannerBackground,
             bannerTitle,
@@ -52,7 +76,7 @@ export default class IdeaShowScreen extends Component {
                     height: '100%',
                     width: '100%'
                 }} source={{
-                    uri: 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
+                    uri: image_url? image_url:'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
                 }}/>
                 <View style={bannerBackground}/>
                 <View style={bannerTitle}>
@@ -61,12 +85,12 @@ export default class IdeaShowScreen extends Component {
                         fontSize: 30,
                         lineHeight: 36,
                         marginBottom: 8
-                    }}>我想學畫畫</Text>
+                    }}>{`${idea_type==='teach'?'我想教':'我想學'}${skill}`}</Text>
                     <Text style={{
                         color: 'white',
                         fontSize: 20,
                         lineHeight: 24
-                    }}>初階人像攝影工作坊，從基本觀念、拍攝所需至燈光運用，完整流程深入淺出一次瞭解。</Text>
+                    }}>{goal}</Text>
                 </View>
                 <View style={likeContainer}>
                     <Button danger rounded onPress={(e) => this.handleLike(e)}>
@@ -76,7 +100,7 @@ export default class IdeaShowScreen extends Component {
                         color: 'white',
                         marginLeft: 10,
                         fontSize: 20
-                    }}>31 人喜歡</Text>
+                    }}>{`${like_number}人喜歡`}</Text>
                 </View>
                 <View style={{
                     flex: 1,
@@ -96,14 +120,14 @@ export default class IdeaShowScreen extends Component {
                     }}>
                         <View style={authorImageContainer}>
                             <Image style={authorImage} source={{
-                                uri: 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
+                                uri: picture_url
                             }}/>
                         </View>
                         <Text style={{
                             color: 'white',
                             marginLeft: 10,
                             fontSize: 24
-                        }}>賴詰凱</Text>
+                        }}>{name}</Text>
                     </View>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
                         <Icon name="close" style={{
@@ -115,6 +139,26 @@ export default class IdeaShowScreen extends Component {
         );
     }
 }
+IdeaShowScreen.defaultProps = {
+    goal:"b",
+    i_id:8,
+    idea_type:"learn",
+    like_number:0,
+    name:"賴詰凱",
+    picture_url:"https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/18622427_1859238271067164_3869120362467491071_n.jpg?oh=681ac9d57e2917e97ce9d25f027b76d4&oe=59D96830",
+    skill:"a",
+}
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        showIdea,
+    }, dispatch);
+}
+function mapStateToProps({ ideaShow }) {
+    return {
+        ideaShow,
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(IdeaShowScreen);
 
 const styles = {
     bannerBackground: {

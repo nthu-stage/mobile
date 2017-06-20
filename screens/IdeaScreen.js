@@ -44,10 +44,15 @@ class IdeaScreen extends Component {
     constructor(props) {
         super(props);
         this.onUpdate = this.onUpdate.bind(this);
+        this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => {
+            console.log('rowHasChanged', r1, r2)
+            return true;
+        }});
         this.state = {
             order: 'new',
             modalToggle: false,
-            searchText: ''
+            searchText: '',
+            dataSource: this.ds.cloneWithRows([{i_id: 2, like_number: 1}]),
         };
     }
 
@@ -63,10 +68,17 @@ class IdeaScreen extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+        this.setState({
+            dataSource: this.ds.cloneWithRows([{i_id: 2, like_number: Math.random() * 10}])
+        })
+    }
+
     render() {
         const {order, modalToggle, searchText} = this.state;
         const ideas = this.props.ideaList;
-
+        console.log("rerender", this.state.dataSource);
         return (
             <View style={styles.container}>
                 <Navbar title="許願池" right={< SearchModal passbackSearchText = {
@@ -76,7 +88,7 @@ class IdeaScreen extends Component {
                 <ScrollView style={{
                     flex: 1
                 }}>
-                    <List removeClippedSubviews={false} dataArray={ideas} renderRow={(idea) => <IdeaItem content={idea} navigation={this.props.navigation}/>}/>
+                    <ListView dataSource={this.state.dataSource} renderRow={(idea) => <IdeaItem content={idea} navigation={this.props.navigation}/>}/>
                 </ScrollView>
             </View>
         );

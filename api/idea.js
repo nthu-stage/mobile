@@ -11,17 +11,41 @@ export function listIdea(fb, searchText, order, offset, limit) {
         url+='&limit=';
         url+=`${limit}`;
     }
-    if (fb) {
-        let {userID, signedRequest} = fb;
-        return fetch(url, {
-            headers: {
-                userID,
-                signedRequest
-            }
-        })
-    } else {
-        return fetch(url).then(res=>{
-            return res.json();
-        })
-    }
+    let {userID, accessToken} = fb
+    return fetch(url, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            userID,
+            accessToken
+        }
+    })
+}
+
+export function showIdea(fb, i_id) {
+    let url = `${baseUrl}/ideas/${i_id}`;
+    let {userID, accessToken} = fb;
+    return fetch(url, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            userID,
+            accessToken
+        }
+    })
+}
+
+export function likeIdea(fb, i_id) {
+    let url = `${baseUrl}/ideas/${i_id}`;
+    let {userID, accessToken} = fb;
+    console.log("api");
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            userID,
+            accessToken
+        }
+    });
 }

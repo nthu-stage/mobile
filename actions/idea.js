@@ -1,23 +1,25 @@
 import {
     listIdea as listIdeaFromApi,
+    showIdea as showIdeaFromApi,
+    likeIdea as likeIdeaFromApi
 } from '../api/idea';
 
-export function listIdea(searchText, order) {
-    return ((dispatch, getState) => {
-        // dispatch(showLoading());
-        listIdeaFromApi(null, searchText, order).then(res => {
-            dispatch({type: '@IDEA/LIST', payload: res});
-        }).catch(err => {
-            
-            // switch (err.response.status) {
-            //     case 400:
-            //         dispatch(deliverAlert('內容有誤', 'danger', 3000));
-            //         break;
-            //     default:
-            //         dispatch(deliverAlert('搜尋失敗', 'danger', 3000));
-            // }
-        }).then(() => {
-            // dispatch(hideLoading());
-        });
-    });
+export const listIdea = (searchText, order) => async (dispatch, getState) => {
+    const res = await listIdeaFromApi(getState().auth, searchText, order);
+    const data = await res.json();
+    dispatch({type: '@IDEA/LIST', payload: data});
+}
+export const showIdea = (i_id) => async (dispatch, getState) => {
+    i_id = parseInt(i_id, 10);
+    const res = await showIdeaFromApi(getState().auth, i_id);
+    const data = await res.json();
+    dispatch({type: '@IDEA/SHOW', payload: data});
+}
+export const likeSearchIdea = (i_id) => async (dispatch, getState) => {
+    i_id = parseInt(i_id, 10);
+    console.log("action");
+    const res = await likeIdeaFromApi(getState().auth, i_id);
+    const data = await res.json();
+    console.log(data);
+    dispatch({type: '@IDEA/LIKE_LIST', payload: data});
 }
