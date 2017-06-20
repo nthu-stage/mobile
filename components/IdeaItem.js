@@ -7,6 +7,8 @@ import {
     AlertIOS,
     Alert
 } from 'react-native';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {LinearGradient} from 'expo';
 import {
     Container,
@@ -26,8 +28,9 @@ import {
     Row,
     ListItem
 } from 'native-base';
+import { likeSearchIdea } from '../actions/idea'
 
-export default class IdeaItem extends Component {
+class IdeaItem extends Component {
     constructor(props) {
         super(props);
         this.handlePress = this.handlePress.bind(this);
@@ -42,21 +45,32 @@ export default class IdeaItem extends Component {
             liked:true,
         }
     }
+
+    componentDidMount() {
+        console.log('ReceiveProps', this.props);
+    }
+
+    componentWillReceiveProps(next){
+        console.log('ReceiveProps', next);
+        this.setState({
+            ...next.content,
+        })
+    }
     handlePress() {
         console.log(this.props.content.i_id);
         this.props.navigation.navigate('ideaShow',{i_id:this.props.content.i_id});
     }
     handleLike(e) {
-        Alert.alert('Like has been pressed.',);
+        Alert.alert('Like has been pressed.');
         e.stopPropagation();
-        //this.props.likeSearchIdea(this.props.i_id);
+        console.log(this.props.content.i_id);
+        this.props.likeSearchIdea(this.props.content.i_id);
 
     }
 
     render() {
-        const { uri, idea_type, skill, goal, like_number, liked }=this.props.content;
+        const { uri, idea_type, skill, goal, like_number, liked }=this.state;
         const _uri = uri? uri: this.state.uri;
-        console.log(this.props);
         return (
             <TouchableOpacity onPress={this.handlePress}>
             <View style={{
@@ -136,3 +150,9 @@ export default class IdeaItem extends Component {
         );
     }
 }
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        likeSearchIdea,
+    }, dispatch);
+}
+export default connect(null, mapDispatchToProps)(IdeaItem);
