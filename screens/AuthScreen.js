@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import {Video, Asset, AppLoading} from 'expo';
+import {Video, Asset, Font, AppLoading} from 'expo';
 import {View, StyleSheet, Dimensions, AsyncStorage} from 'react-native';
 import {Container, Content, Text, Icon, Button} from 'native-base';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 import {facebookLogin} from '../actions/auth';
-
 const videoSource = require('../assets/video/auth.mp4');
 const {width, height} = Dimensions.get('window');
 
@@ -19,13 +18,16 @@ class AuthScreen extends Component {
         this.mountVideo = this.mountVideo.bind(this);
         this.onPressLogin = this.onPressLogin.bind(this);
         this.state = {
-            loading: null
+            loading: null,
+            fontLoading: true,
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.facebookLogin(false);
         this.onAuthComplete(this.props);
+        await Font.loadAsync({'Aldrich': require('../assets/fonts/Aldrich-Regular.ttf')});
+        this.setState({fontLoading: false});
     }
 
     componentWillReceiveProps(nextProps) {
@@ -58,17 +60,18 @@ class AuthScreen extends Component {
     }
 
     render() {
+        const {loading, fontLoading} = this.state;
         const {
             titleContainer,
             text,
             logo,
-            title,
             loginContainer,
             loginButton,
             loginText
         } = styles;
         return (
             <Container>
+                {loading && fontLoading && <AppLoading/>}
                 <Video style={{
                     width,
                     height
@@ -78,10 +81,10 @@ class AuthScreen extends Component {
                         ...text,
                         ...logo
                     }} name="cubes"/>
-                    <Text style={{
+                    {!fontLoading && <Text style={{
                         ...text,
-                        ...title
-                    }}>NTHU Stage</Text>
+                        ...styles.title
+                    }}>NTHU Stage</Text>}
                 </Content>
                 <Content style={loginContainer}>
                     <Button onPress={this.onPressLogin} style={loginButton} block>
@@ -114,6 +117,7 @@ const styles = {
         marginBottom: 20
     },
     title: {
+        fontFamily: 'Aldrich',
         fontSize: 42,
         fontWeight: 'bold'
     },
