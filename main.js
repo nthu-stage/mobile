@@ -59,11 +59,25 @@ export const AppNavigator = TabNavigator({
                     profile: {
                         screen: ProfileScreen
                     },
-                    workshopList: {
-                        screen: WorkshopListScreen
+                    workshopListStack: {
+                        screen: StackNavigator({
+                            workshopList: {
+                                screen: WorkshopListScreen
+                            },
+                            workshopListShow: {
+                                screen: WorkshopShowScreen
+                            }
+                        }, {headerMode: 'none'})
                     },
-                    ideaList: {
-                        screen: IdeaListScreen
+                    ideaListStack: {
+                        screen: StackNavigator({
+                            ideaList: {
+                                screen: IdeaListScreen
+                            },
+                            ideaListShow: {
+                                screen: IdeaShowScreen
+                            }
+                        }, {headerMode: 'none'})
                     }
                 }, {headerMode: 'none'})
             }
