@@ -12,11 +12,14 @@ import {
 import {LinearGradient} from 'expo';
 const {width, height} = Dimensions.get('window');
 
-export default class IdeaShowScreen extends Component {
+class IdeaShowScreen extends Component {
     static navigationOptions = {
         tabBarLabel: '許願池',
         tabBarIcon: ({tintColor}) => <Icon style={{color: tintColor, fontSize: 24}} name='gift'/>
     };
+    componentWillMount(){
+        this.props.showIdea(this.props.navigation.state.params.i_id);
+    }
     handleLike(e) {
         Alert.alert('Like has been pressed.',);
         e.stopPropagation();
@@ -92,6 +95,18 @@ export default class IdeaShowScreen extends Component {
         );
     }
 }
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        listIdea,
+    }, dispatch);
+}
+function mapStateToProps({ ideaList }) {
+    return {
+        ideaList,
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(IdeaShowScreen);
 
 const styles = {
     bannerBackground: {
