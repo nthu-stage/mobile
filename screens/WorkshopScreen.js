@@ -48,7 +48,7 @@ class WorkshopScreen extends Component {
         this.handleFilter = this.handleFilter.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
     }
-    componentDidMount() {
+    componentWillMount() {
         this.props.listWorkshop(this.state.searchText, this.state.stateFilter);
     }
 
@@ -61,9 +61,9 @@ class WorkshopScreen extends Component {
     }
 
     render() {
-      const {workshopList} = this.props;
-      const {stateFilter} = this.state;
-      let prop = stateFilter >> 1, goal = stateFilter & 1;
+        const {workshopList, navigation} = this.props;
+        const {stateFilter} = this.state;
+        let prop = stateFilter >> 1, goal = stateFilter & 1;
       return (
           <Container>
               <Header>
@@ -93,7 +93,7 @@ class WorkshopScreen extends Component {
                   }}
                   dataSource={this.state.dataSource}
                   renderRow={(workshop) => {
-                      return <WorkshopItem key={workshop.w_id} {...workshop} />;
+                      return <WorkshopItem key={workshop.w_id} navigation={this.props.navigation} {...workshop} />;
                   }}
                   canLoadMore={() => {
                       return false;

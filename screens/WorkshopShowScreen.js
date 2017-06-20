@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {
     View,
     Image,
@@ -33,6 +35,7 @@ import {
 } from 'native-base';
 import Geocoder from 'react-native-geocoding';
 import WorkshopShowItem from '../components/WorkshopShowItem';
+import {showWorkshop} from '../actions/workshop';
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -41,7 +44,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 Geocoder.setApiKey('AIzaSyCODRhTy6XDPgLntVyqTio29sGjQ6wnfok');
 
-export default class WorkshopShowScreen extends Component {
+class WorkshopShowScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -52,8 +55,11 @@ export default class WorkshopShowScreen extends Component {
                 longitudeDelta: LONGITUDE_DELTA
             }
         }
+
+        this.handleGoBack = this.handleGoBack.bind(this);
     }
     componentWillMount() {
+        const {state} = this.props.navigation;
         StatusBar.setBarStyle('light-content', true);
         Geocoder.getFromLocation('清華大學實齋').then(json => {
             var location = json.results[0].geometry.location;
@@ -69,10 +75,13 @@ export default class WorkshopShowScreen extends Component {
         }, error => {
             console.log(error);
         });
+
+        this.props.showWorkshop(state.params.w_id);
     }
 
     render() {
         const {bannerBackground, bannerTitle, H2LineHeight, textLineHeight, header, headerIcon} = styles;
+        const {state} = this.props.navigation;
         return (
             <Container>
                 <Content style={{
@@ -92,10 +101,10 @@ export default class WorkshopShowScreen extends Component {
                         <View style={bannerTitle}>
                             <H1 style={{
                                 color: 'white'
-                            }}>文案工作坊</H1>
+                            }}>{`${this.props.workshopShow.title}文案工作坊`}</H1>
                         </View>
                         <View style={header}>
-                            <Button transparent>
+                            <Button transparent onPress={this.handleGoBack}>
                                 <Icon style={headerIcon} name='angle-left'/>
                             </Button>
                         </View>
@@ -114,7 +123,7 @@ export default class WorkshopShowScreen extends Component {
                             <WorkshopShowItem iconName="male" title="報名人數" subtitle="0/30"/>
                             <WorkshopShowItem iconName="calendar-times-o" title="報名截止" subtitle="2017/06/03 03:21:26"/>
                             <WorkshopShowItem iconName="money" title="價 格" subtitle="12342"/>
-                            <WorkshopShowItem padder={false} iconName="user" title="講者" subtitle="賴詰凱"/>
+                            <WorkshopShowItem padder={false} iconName="user" title={`講者${state.params.w_id}`} subtitle="賴詰凱"/>
                         </Grid>
                     </Content>
                     <Content>
@@ -144,7 +153,23 @@ export default class WorkshopShowScreen extends Component {
 
         );
     }
+
+    handleGoBack() {
+        this.props.navigation.goBack();
+    }
 }
+
+function mapStateToProps({workshopShow}) {
+    return {workshopShow}
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        showWorkshop
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(WorkshopShowScreen);
 
 const TOOLBAR_HEIGHT = Platform.OS === 'ios'
     ? 84

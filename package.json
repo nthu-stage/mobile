@@ -19,6 +19,7 @@
     "react-redux": "^5.0.5",
     "react-redux-loading-bar": "^2.9.2",
     "redux": "^3.7.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "moment": "^2.18.1"
   }
 }

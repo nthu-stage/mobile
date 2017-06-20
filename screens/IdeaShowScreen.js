@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Image, Dimensions, TouchableOpacity, Alert} from 'react-native';
+import {
+    View,
+    StyleSheet,
+    Image,
+    Dimensions,
+    TouchableOpacity,
+    Alert
+} from 'react-native';
 import {
     Container,
     Content,
@@ -15,7 +22,10 @@ const {width, height} = Dimensions.get('window');
 class IdeaShowScreen extends Component {
     static navigationOptions = {
         tabBarLabel: '許願池',
-        tabBarIcon: ({tintColor}) => <Icon style={{color: tintColor, fontSize: 24}} name='gift'/>
+        tabBarIcon: ({tintColor}) => <Icon style={{
+                color: tintColor,
+                fontSize: 24
+            }} name='gift'/>
     };
     componentWillMount(){
         this.props.showIdea(this.props.navigation.state.params.i_id);
@@ -27,35 +37,43 @@ class IdeaShowScreen extends Component {
 
     }
     render() {
-        const {bannerBackground, bannerTitle, authorContainer, authorImageContainer, authorImage, likeContainer} = styles;
+        const {
+            bannerBackground,
+            bannerTitle,
+            authorContainer,
+            authorImageContainer,
+            authorImage,
+            likeContainer
+        } = styles;
         return (
-            <View style={{flex: 1}}>
+            <View style={{
+                flex: 1
+            }}>
                 <Image style={{
                     position: 'relative',
                     resizeMode: 'cover',
                     height: '100%',
-                    width: '100%',
+                    width: '100%'
                 }} source={{
                     uri: 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
                 }}/>
-                <View style={bannerBackground} />
-                
+                <View style={bannerBackground}/>
                 <View style={bannerTitle}>
                     <Text style={{
                         color: 'white',
                         fontSize: 30,
                         lineHeight: 36,
-                        marginBottom: 8,
+                        marginBottom: 8
                     }}>我想學畫畫</Text>
                     <Text style={{
                         color: 'white',
                         fontSize: 20,
-                        lineHeight: 24,
+                        lineHeight: 24
                     }}>初階人像攝影工作坊，從基本觀念、拍攝所需至燈光運用，完整流程深入淺出一次瞭解。</Text>
                 </View>
                 <View style={likeContainer}>
-                    <Button danger rounded onPress={(e)=>this.handleLike(e)}>
-                        <Icon name="heart" />
+                    <Button danger rounded onPress={(e) => this.handleLike(e)}>
+                        <Icon name="heart"/>
                     </Button>
                     <Text style={{
                         color: 'white',
@@ -75,7 +93,10 @@ class IdeaShowScreen extends Component {
                     padding: 20,
                     backgroundColor: 'rgba(0, 0, 0, 0)'
                 }}>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}>
                         <View style={authorImageContainer}>
                             <Image style={authorImage} source={{
                                 uri: 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
@@ -87,8 +108,10 @@ class IdeaShowScreen extends Component {
                             fontSize: 24
                         }}>賴詰凱</Text>
                     </View>
-                    <TouchableOpacity onPress={()=>this.props.navigation.goBack()}>
-                        <Icon name="close" style={{color:'white'}}/>
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                        <Icon name="close" style={{
+                            color: 'white'
+                        }}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -148,7 +171,7 @@ const styles = {
     authorImage: {
         height: 36,
         width: 36,
-        borderRadius: 18,
+        borderRadius: 18
     },
     likeContainer: {
         position: 'absolute',
@@ -156,6 +179,6 @@ const styles = {
         bottom: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0)',
+        backgroundColor: 'rgba(0, 0, 0, 0)'
     }
 };
