@@ -11,6 +11,7 @@ import {
     List,
     Text
 } from 'native-base';
+import {NavigationActions} from 'react-navigation';
 import Navbar from '../components/Navbar';
 import WorkshopListItem from '../components/WorkshopListItem';
 
@@ -23,9 +24,15 @@ export default class WorkshopListScreen extends Component {
             }} name='user-circle-o'/>
     };
 
+    constructor(props) {
+        super(props);
+        this.renderRow = this.renderRow.bind(this);
+        this.renderGoBackIcon = this.renderGoBackIcon.bind(this);
+    }
+
     renderGoBackIcon() {
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+            <TouchableOpacity onPress={() => this.props.navigation.dispatch(NavigationActions.back())}>
                 <Icon name="angle-left"/>
             </TouchableOpacity>
         );
@@ -33,7 +40,7 @@ export default class WorkshopListScreen extends Component {
 
     renderRow(rowData) {
         return (
-            <WorkshopListItem {...rowData}/>
+            <WorkshopListItem {...rowData} navigation={this.props.navigation}/>
         );
     }
 

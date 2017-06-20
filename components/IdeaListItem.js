@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Icon} from 'native-base';
 
 export default class IdeaListItem extends Component {
@@ -14,9 +14,11 @@ export default class IdeaListItem extends Component {
     render() {
         const {i_id, idea_type, skill, like_number} = this.props;
         const {container, badgeContainer, likeText, titleContainer} = styles;
-        const iWanna = idea_type === 'teach' ? '我想教' : '我想學';
+        const iWanna = idea_type === 'teach'
+            ? '我想教'
+            : '我想學';
         return (
-            <View style={container}>
+            <TouchableOpacity style={container} onPress={e => this.props.navigation.navigate('ideaListShow', {i_id})}>
                 <View style={badgeContainer}>
                     <Text style={likeText}>{like_number}</Text>
                     <Icon name="heart" style={{
@@ -33,7 +35,7 @@ export default class IdeaListItem extends Component {
                         color: '#999'
                     }}/>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 }
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#d9534f',
         marginRight: 15,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     likeText: {
         color: 'white',
