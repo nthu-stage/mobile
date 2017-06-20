@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {listWorkshop} from '../actions/workshop';
+import {listWorkshop, listMoreWorkshop} from '../actions/workshop';
 import {View, StyleSheet, ListView, Imagem, RefreshControl} from 'react-native';
 import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import {
@@ -45,7 +45,10 @@ class WorkshopScreen extends Component {
             }),
             searchText: '',
             stateFilter: 3,
-            modalToggle: false
+            modalToggle: false,
+            limit: 3,
+            hasMoreWorkshops: true,
+            listingWorkshops: 0
         }
 
         this.handleRefresh = this.handleRefresh.bind(this);
@@ -55,20 +58,25 @@ class WorkshopScreen extends Component {
     }
 
     componentWillMount() {
-        this.props.listWorkshop(this.state.searchText, this.state.stateFilter);
+        const {searchText, stateFilter, hasMoreWorkshops} = this.state;
+        const {workshopList} = this.props;
+        this.props.listWorkshop(searchText, stateFilter);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.workshopList !== nextProps.workshopList) {
+        const {workshopList} = this.props;
+        const {limit} = this.state;
+        if (workshopList !== nextProps.workshopList) {
             this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(nextProps.workshopList)
+                dataSource: this.state.dataSource.cloneWithRows(nextProps.workshopList),
+                listingWorkshops: nextProps.workshopList.length
             });
         }
     }
 
     render() {
-        const {workshopList, navigation} = this.props;
-        const {stateFilter} = this.state;
+        const {workshopList, navigation, workshopLoad} = this.props;
+        const {stateFilter, hasMoreWorkshops} = this.state;
         let prop = stateFilter >> 1,
             goal = stateFilter & 1;
         return (
@@ -78,7 +86,7 @@ class WorkshopScreen extends Component {
                 } />}/>
                 <Segment multiple left="調查中" right="已達標" onUpdate={this.handleFilter}/>
                 <ListView refreshControl={< RefreshControl refreshing = {
-                    false
+                    workshopLoad
                 }
                 onRefresh = {
                     this.handleRefresh
@@ -87,7 +95,9 @@ class WorkshopScreen extends Component {
                 }} dataSource={this.state.dataSource} renderRow={(workshop) => {
                     return <WorkshopItem key={workshop.w_id} navigation={this.props.navigation} {...workshop}/>;
                 }} canLoadMore={() => {
-                    return false;
+                    if (workshopLoad || !workshopList.length)
+                        return false;
+                    return hasMoreWorkshops;
                 }} onLoadMoreAsync={this.handleLoadMore} enableEmptySections={true}/>
             </View>
         );
@@ -99,10 +109,10 @@ class WorkshopScreen extends Component {
     }
 
     handleLoadMore() {
-        // const {listingMorePosts, dispatch, posts, searchText} = this.props;
-        // const start = posts[posts.length - 1].id;
-        // if (listingMorePosts !== start)
-        //     dispatch(listMorePosts(searchText, start));
+        const {searchText, stateFilter, limit, hasMoreWorkshops, listingWorkshops} = this.state;
+        const {workshopList, workshopLoad} = this.props;
+        if (listingWorkshops === workshopList.length)
+            this.props.listMoreWorkshop(searchText, stateFilter, workshopList.length, limit);
     }
 
     handleFilter(f) {
@@ -121,7 +131,7 @@ class WorkshopScreen extends Component {
     handleSearch(e) {
         if (e !== this.state.searchText) {
             this.setState({searchText: e});
-            this.props.listWorkshop(e, this.stateFilter);
+            this.props.listWorkshop(e, this.stateFilter, 0, this.state.limit);
         }
     }
 }
@@ -133,13 +143,14 @@ const styles = StyleSheet.create({
     }
 })
 
-function mapStateToProps({workshopList}) {
-    return {workshopList}
+function mapStateToProps({workshopList, workshopLoad}) {
+    return {workshopList, workshopLoad}
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        listWorkshop
+        listWorkshop,
+        listMoreWorkshop
     }, dispatch);
 }
 
