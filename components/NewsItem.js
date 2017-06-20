@@ -11,13 +11,33 @@ import {
 } from 'native-base';
 
 export default class NewsItem extends Component {
+    static defaultProps = {
+        action: 'attend',
+        created_at: '',
+        name: '',
+        picture_url: '',
+        target: '',
+        target_id: '',
+    };
+
+    action2sentence(action) {
+        return {
+            'propose': '籌辦了一場工作坊',
+            'attend': '參加了一場工作坊',
+            'come_up_with': '許下了一個願望',
+            'like': '喜歡了一個願望',
+        }[action];
+    }
+
     render() {
+        const {action, name, picture_url, target, target_id} = this.props;
         const {iconCornerCotainer, iconCornerBorder, iconCorner} = styles;
+        const sentence = this.action2sentence(action);
         return (
             <ListItem avatar>
                 <Left>
                     <Thumbnail small source={{
-                        uri: 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
+                        uri: picture_url
                     }}/>
                     <View style={iconCornerCotainer}>
                         <View style={iconCornerBorder}>
@@ -27,8 +47,8 @@ export default class NewsItem extends Component {
 
                 </Left>
                 <Body>
-                    <Text>賴詰凱</Text>
-                    <Text note>喜歡了一個願望：我想學寫程式</Text>
+                    <Text>{name}</Text>
+                    <Text note>{`${sentence}：${target}`}</Text>
                 </Body>
                 <Right>
                     <Icon name="angle-right"/>

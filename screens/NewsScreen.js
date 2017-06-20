@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {View, ScrollView, StyleSheet} from 'react-native';
+import moment from 'moment';
 import {
     Container,
     Content,
@@ -15,9 +18,12 @@ import {
     Icon,
     Separator
 } from 'native-base';
+import Navbar from '../components/Navbar';
 import NewsItem from '../components/NewsItem';
+import {listNews} from '../actions/news';
+import 'moment/locale/zh-tw';
 
-export default class NewsScreen extends Component {
+class NewsScreen extends Component {
     static navigationOptions = {
         tabBarLabel: '動態',
         tabBarIcon: ({tintColor}) => <Icon style={{
@@ -54,50 +60,50 @@ export default class NewsScreen extends Component {
         }
     }
 
+    source2data(source) {
+        moment.locale('zh-tw');
+        let data = [];
+        let current = null;
+        for (let s of source) {
+            const key = moment(s.created_at).fromNow();
+            if (current !== key) {
+                if (current !== null) {
+                    data[data.length - 1].last = true;
+                }
+                data.push({
+                    type: 'separator',
+                    title: key,
+                });
+                current = key;
+            }
+            data.push(s);
+        }
+        return data;
+    }
+
+    componentWillMount() {
+        this.props.listNews();
+    }
+
     renderRow(rowData) {
         if (rowData.type === 'separator') {
             return (
                 <Separator bordered>
-                    <Text>{rowData.data}</Text>
+                    <Text>{rowData.title}</Text>
                 </Separator>
             );
         }
-        return <NewsItem/>;
+        return <NewsItem {...rowData}/>;
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <View>
-                    <View style={{
-                        width: '100%',
-                        height: 20
-                    }}/>
-                    <View style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        width: '100%',
-                        height: 64,
-                        padding: 20
-                    }}>
-                        <View/>
-                        <View>
-                            <Text style={{
-                                fontWeight: 'bold',
-                                fontSize: 16,
-                                lineHeight: 16
-                            }}>
-                                動態消息
-                            </Text>
-                        </View>
-                        <View/>
-                    </View>
-                </View>
+                <Navbar title="動態消息"/>
                 <ScrollView style={{
                     flex: 1
                 }}>
-                    <List removeClippedSubviews={false} dataArray={this.state.dataSource} renderRow={this.renderRow}/>
+                    <List dataArray={this.source2data(this.props.news)} renderRow={this.renderRow}/>
                 </ScrollView>
             </View>
         );
@@ -110,3 +116,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#fcfcfc'
     }
 })
+
+function mapStateToProps({news}) {
+    return {news};
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        listNews
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewsScreen);
