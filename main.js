@@ -55,16 +55,10 @@ export const AppNavigator = TabNavigator({
                     profile: {
                         screen: ProfileScreen
                     },
-                    proposeWorkshopList: {
+                    workshopList: {
                         screen: WorkshopListScreen
                     },
-                    attendWorkshopList: {
-                        screen: WorkshopListScreen
-                    },
-                    comeUpWithIdeaList: {
-                        screen: IdeaListScreen
-                    },
-                    likeIdeaList: {
+                    ideaList: {
                         screen: IdeaListScreen
                     }
                 }, {headerMode: 'none'})
@@ -95,7 +89,7 @@ function mapStateToProps({nav}) {
 
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
 
-const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'idea'}));
+const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'auth'}));
 export const nav = (state = initialState, action) => {
     const nextState = AppNavigator.router.getStateForAction(action, state);
     return nextState || state;

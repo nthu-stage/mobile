@@ -19,13 +19,13 @@ export default class Navbar extends Component {
                 }}>
                     <View style={{
                         flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'flex-end'
+                        alignItems: 'flex-start',
+                        justifyContent: 'center'
                     }}>
                         {left}
                     </View>
                     <View style={{
-                        flex: 1,
+                        flex: 2,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}>
@@ -40,7 +40,7 @@ export default class Navbar extends Component {
                     <View style={{
                         flex: 1,
                         alignItems: 'flex-end',
-                        justifyContent: 'flex-start'
+                        justifyContent: 'center'
                     }}>
                         {right}
                     </View>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ScrollView, StyleSheet} from 'react-native';
+import {View, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {
     Header,
     Left,
@@ -11,7 +11,7 @@ import {
     List,
     Text
 } from 'native-base';
-import {BlurView} from 'expo';
+import Navbar from '../components/Navbar';
 import IdeaListItem from '../components/IdeaListItem';
 
 export default class IdeaListScreen extends Component {
@@ -25,47 +25,31 @@ export default class IdeaListScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            dataSource: [1, 2, 3, 4],
-        };
+    }
+
+    renderGoBackIcon() {
+        return (
+            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                <Icon name="angle-left"/>
+            </TouchableOpacity>
+        );
+    }
+
+    renderRow(rowData) {
+        return (
+            <IdeaListItem {...rowData}/>
+        );
     }
 
     render() {
+        const {title, dataArray} = this.props.navigation.state.params;
         return (
             <View style={styles.container}>
-                <View>
-                    <View style={{
-                        width: '100%',
-                        height: 20
-                    }}/>
-                    <View style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        width: '100%',
-                        height: 64,
-                        padding: 20
-                    }}>
-                        <View>
-                            <Icon name="angle-left"/>
-                        </View>
-                        <View>
-                            <Text style={{
-                                fontWeight: 'bold',
-                                fontSize: 16,
-                                lineHeight: 16
-                            }}>
-                                我許下的願望
-                            </Text>
-                        </View>
-                        <View>
-                        </View>
-                    </View>
-                </View>
+                <Navbar left={this.renderGoBackIcon()} title={title}/>
                 <ScrollView style={{
                     flex: 1
                 }}>
-                    <List removeClippedSubviews={false} dataArray={this.state.dataSource} renderRow={(rowData) => <IdeaListItem/>}/>
+                    <List removeClippedSubviews={false} dataArray={dataArray} renderRow={this.renderRow}/>
                 </ScrollView>
             </View>
         );
