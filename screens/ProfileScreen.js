@@ -1,5 +1,15 @@
 import React, {Component} from 'react';
-import {ScrollView, View, StyleSheet, Dimensions, Image} from 'react-native';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {
+    ScrollView,
+    View,
+    StyleSheet,
+    Dimensions,
+    Image,
+    TouchableOpacity,
+    Alert
+} from 'react-native';
 import {
     Container,
     Content,
@@ -16,16 +26,39 @@ import {
     Separator,
     Switch
 } from 'native-base';
-import {LinearGradient, BlurView} from 'expo';
+import {LinearGradient, AppLoading} from 'expo';
+import ProfileItem from '../components/ProfileItem';
+import {showProfile} from '../actions/profile';
+
 const {width, height} = Dimensions.get('window');
 
-export default class ProfileScreen extends Component {
+class ProfileScreen extends Component {
     static navigationOptions = {
         tabBarLabel: '個人',
-        tabBarIcon: ({tintColor}) => <Icon style={{color: tintColor, fontSize: 24}} name='user-circle-o'/>
+        tabBarIcon: ({tintColor}) => <Icon style={{
+                color: tintColor,
+                fontSize: 24
+            }} name='user-circle-o'/>
     };
 
+    componentWillMount() {
+        this.props.showProfile();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+    }
+
     render() {
+        if (!this.props.profile) {
+            return (
+                <AppLoading />
+            );
+        }
+        const {navigation, auth, profile} = this.props;
+        const {navigate} = navigation;
+        const {name, picture_url} = auth;
+        const {propose, attend, comeUpWith, like} = profile;
         const {
             avatarContainer,
             avatarBlurBackground,
@@ -37,30 +70,26 @@ export default class ProfileScreen extends Component {
             icon
         } = styles;
         return (
-            <Container style={{
-                backgroundColor: 'white'
-            }}>
+            <View style={styles.container}>
                 <View style={avatarContainer}>
                     <Image style={{
                         resizeMode: 'cover',
                         height: 180,
-                        width: null,
-
+                        width: null
                     }} blurRadius={1} source={{
-                        uri: 'https://mdbootstrap.com/img/Photos/Avatars/img%20(3).jpg'
+                        uri: picture_url
                     }}/>
                     <LinearGradient locations={[0, 1]} colors={['white', 'black']} style={avatarBackground}/>
                     <View style={authorContainer}>
-                        <Text style={author}>賴詰凱</Text>
+                        <Text style={author}>{name}</Text>
                     </View>
                     <View style={authorImageContainer}>
                         <Image style={authorImage} source={{
-                            uri: 'https://mdbootstrap.com/img/Photos/Avatars/img%20(3).jpg'
+                            uri: picture_url
                         }}/>
                     </View>
-
                 </View>
-                <Content>
+                <ScrollView>
                     <ListItem icon>
                         <Left>
                             <Icon style={{
@@ -75,83 +104,22 @@ export default class ProfileScreen extends Component {
                             <Switch value={true}/>
                         </Right>
                     </ListItem>
-                    <ListItem icon>
-                        <Left>
-                            <Icon style={{
-                                ...icon,
-                                color: 'grey'
-                            }} name="calendar"/>
-                        </Left>
-                        <Body>
-                            <Text>平常有空的時間</Text>
-                        </Body>
-                        <Right>
-                            <Icon name="angle-right"/>
-                        </Right>
-                    </ListItem>
-                    <ListItem icon>
-                        <Left>
-                            <Icon style={{
-                                ...icon,
-                                color: '#145C9E'
-                            }} name="users"/>
-                        </Left>
-                        <Body>
-                            <Text>我提案的工作坊</Text>
-                        </Body>
-                        <Right>
-                            <Icon name="angle-right"/>
-                        </Right>
-                    </ListItem>
-                    <ListItem icon>
-                        <Left>
-                            <Icon style={{
-                                ...icon,
-                                color: '#145C9E'
-                            }} name="user-plus"/>
-                        </Left>
-                        <Body>
-                            <Text>我報名的工作坊</Text>
-                        </Body>
-                        <Right>
-                            <Icon name="angle-right"/>
-                        </Right>
-                    </ListItem>
-                    <ListItem icon>
-                        <Left>
-                            <Icon style={{
-                                ...icon,
-                                color: '#7E52A0'
-                            }} name="gift"/>
-                        </Left>
-                        <Body>
-                            <Text>我許下的願望</Text>
-                        </Body>
-                        <Right>
-                            <Icon name="angle-right"/>
-                        </Right>
-                    </ListItem>
-                    <ListItem icon>
-                        <Left>
-                            <Icon style={{
-                                ...icon,
-                                color: '#EF476F'
-                            }} name="heart"/>
-                        </Left>
-                        <Body>
-                            <Text>我喜歡的願望</Text>
-                        </Body>
-                        <Right>
-                            <Icon name="angle-right"/>
-                        </Right>
-                    </ListItem>
-                </Content>
-            </Container>
+                    <ProfileItem icon="calendar" iconColor="grey" title="平常有空的時間"/>
+                    <ProfileItem onPress={e => navigate('workshopList', {title: '我提案的工作坊', dataArray: propose})} icon="users" iconColor="#145C9E" title="我提案的工作坊"/>
+                    <ProfileItem onPress={e => navigate('workshopList', {title: '我報名的工作坊', dataArray: attend})} icon="user-plus" iconColor="#145C9E" title="我報名的工作坊"/>
+                    <ProfileItem onPress={e => navigate('ideaList', {title: '我許下的願望', dataArray: comeUpWith})} icon="gift" iconColor="#7E52A0" title="我許下的願望"/>
+                    <ProfileItem onPress={e => navigate('ideaList', {title: '我喜歡的願望', dataArray: like})} icon="heart" iconColor="#EF476F" title="我喜歡的願望"/>
+                </ScrollView>
+            </View>
         );
     }
 }
 
 const styles = {
+    container: {
+        flex: 1,
+        backgroundColor: '#fcfcfc'
+    },
     avatarContainer: {
         height: 180 + 50,
         position: 'relative',
@@ -166,7 +134,7 @@ const styles = {
         position: 'absolute',
         width: width,
         height: 180,
-        opacity: 0.6,
+        opacity: 0.6
     },
     authorContainer: {
         height: 170,
@@ -210,3 +178,15 @@ const styles = {
         textAlign: 'center'
     }
 }
+
+function mapStateToProps({profile, auth}) {
+    return {profile, auth};
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+        showProfile
+    }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);

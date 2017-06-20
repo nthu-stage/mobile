@@ -6,6 +6,7 @@ import AlertReducer from './reducer_alert';
 import {WorkshopListReducer, WorkshopShowReducer} from './reducer_workshop';
 import { IdeaListReducer, IdeaShowReducer } from './reducer_idea';
 import {FacebookLoginReducer} from './reducer_auth';
+import ProfileReducer from './reducer_profile';
 
 export default function getStore(nav) {
     const store = createStore(combineReducers({
@@ -16,7 +17,8 @@ export default function getStore(nav) {
         ideaList:IdeaListReducer,
         ideaShow:IdeaShowReducer,
         auth: FacebookLoginReducer,
-        workshopShow: WorkshopShowReducer
+        workshopShow: WorkshopShowReducer,
+        profile: ProfileReducer,
     }), compose(applyMiddleware(thunkMiddleware)));
 
     return store;
