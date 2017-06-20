@@ -36,13 +36,14 @@ class IdeaItem extends Component {
         this.handlePress = this.handlePress.bind(this);
         this.handleLike = this.handleLike.bind(this);
 
+        const {uri, idea_type, skill, goal, like_number, liked} = this.props.content;
         this.state = {
-            uri:'https://i.imgur.com/FmTsK1v.jpg',
-            idea_type:'teach',
-            skill:'攝影',
-            goal:'希望可以用影像留住生命中的美好事物',
-            like_number: 31,
-            liked:true,
+            uri,
+            idea_type,
+            skill,
+            goal,
+            like_number,
+            liked,
         }
     }
 
