@@ -43,8 +43,8 @@ export default class IdeaItem extends Component {
         }
     }
     handlePress() {
-        console.log(this.props.navigation);
-        this.props.navigation.navigate('ideaShow',{i_id:this.props.i_id});
+        console.log(this.props.content.i_id);
+        this.props.navigation.navigate('ideaShow',{i_id:this.props.content.i_id});
     }
     handleLike(e) {
         Alert.alert('Like has been pressed.',);

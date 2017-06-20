@@ -4,7 +4,7 @@ import {loadingBarReducer} from 'react-redux-loading-bar';
 import AlertReducer from './reducer_alert';
 
 import {WorkshopListReducer, WorkshopShowReducer} from './reducer_workshop';
-import { IdeaListReducer } from './reducer_idea';
+import { IdeaListReducer, IdeaShowReducer } from './reducer_idea';
 import {FacebookLoginReducer} from './reducer_auth';
 
 export default function getStore(nav) {
@@ -14,6 +14,7 @@ export default function getStore(nav) {
         loadingBar: loadingBarReducer,
         workshopList: WorkshopListReducer,
         ideaList:IdeaListReducer,
+        ideaShow:IdeaShowReducer,
         auth: FacebookLoginReducer,
         workshopShow: WorkshopShowReducer
     }), compose(applyMiddleware(thunkMiddleware)));

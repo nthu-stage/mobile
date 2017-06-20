@@ -25,3 +25,22 @@ export function listIdea(fb, searchText, order, offset, limit) {
         })
     }
 }
+
+export function showIdea(fb, i_id) {
+    let url = `${baseUrl}/ideas/${i_id}`;
+    if (fb) {
+        let {userID, signedRequest} = fb;
+        return fetcht(url, {
+            headers: {
+                userID,
+                signedRequest
+            }
+        }).then(res=>{
+            return res.json();
+        });
+    } else {
+        return fetch(url).then(res=>{
+            return res.json();
+        });
+    }
+}

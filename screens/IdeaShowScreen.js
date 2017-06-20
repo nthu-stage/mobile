@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {
     View,
     StyleSheet,
@@ -17,6 +19,8 @@ import {
     Button
 } from 'native-base';
 import {LinearGradient} from 'expo';
+import {showIdea} from '../actions/idea';
+
 const {width, height} = Dimensions.get('window');
 
 class IdeaShowScreen extends Component {
@@ -28,7 +32,9 @@ class IdeaShowScreen extends Component {
             }} name='gift'/>
     };
     componentWillMount(){
+        console.log(this.props.navigation)
         this.props.showIdea(this.props.navigation.state.params.i_id);
+        
     }
     handleLike(e) {
         Alert.alert('Like has been pressed.',);
@@ -37,6 +43,9 @@ class IdeaShowScreen extends Component {
 
     }
     render() {
+        console.log("show screen")
+        console.log(this.props.ideaShow);
+        const { picture_url, idea_type, skill, goal, like_number, liked }=this.props.ideaShow;
         const {
             bannerBackground,
             bannerTitle,
@@ -64,7 +73,7 @@ class IdeaShowScreen extends Component {
                         fontSize: 30,
                         lineHeight: 36,
                         marginBottom: 8
-                    }}>我想學畫畫</Text>
+                    }}>{`${idea_type==='teach'?'我想教':'我想學'}${skill}`}</Text>
                     <Text style={{
                         color: 'white',
                         fontSize: 20,
@@ -121,12 +130,12 @@ class IdeaShowScreen extends Component {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        listIdea,
+        showIdea,
     }, dispatch);
 }
-function mapStateToProps({ ideaList }) {
+function mapStateToProps({ ideaShow }) {
     return {
-        ideaList,
+        ideaShow,
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(IdeaShowScreen);
