@@ -69,7 +69,7 @@ class WorkshopScreen extends Component {
         if (workshopList !== nextProps.workshopList) {
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(nextProps.workshopList),
-                listingWorkshops: nextProps.workshopList.length
+                // listingWorkshops: nextProps.workshopList.length
             });
         }
     }
@@ -111,7 +111,7 @@ class WorkshopScreen extends Component {
     handleLoadMore() {
         const {searchText, stateFilter, limit, hasMoreWorkshops, listingWorkshops} = this.state;
         const {workshopList, workshopLoad} = this.props;
-        if (listingWorkshops === workshopList.length)
+        // if (listingWorkshops === workshopList.length)
             this.props.listMoreWorkshop(searchText, stateFilter, workshopList.length, limit);
     }
 
