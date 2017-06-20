@@ -20,27 +20,38 @@ import {
 } from 'native-base';
 import ProgressBar from './ProgressBar';
 
+var _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+function dateDiffInDays(a, b) {
+    // Discard the time and time-zone information.
+    var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+}
+
 export default class WorkshopItem extends Component {
     constructor(props) {
         super(props);
-
-        this.handlePressImage = this.handlePressImage.bind(this);
     }
 
     render() {
         const {
-            title,
-            min_number,
-            max_number,
-            deadline,
-            pre_deadline,
-            introduction,
-            price,
-            phase,
-            attendees_number
+          w_id,
+          image_url,
+          title,
+          min_number,
+          max_number,
+          deadline,
+          pre_deadline,
+          introduction,
+          price,
+          phase,
+          attendees_number
         } = this.props;
         const { navigate } = this.props.navigation;
-
+        let invest_countdown = dateDiffInDays(new Date(Date.now()), new Date(pre_deadline));
+        let attend_countdown = dateDiffInDays(new Date(Date.now()), new Date(deadline));
         return (
             <View>
                 <TouchableWithoutFeedback onPress={() => {
@@ -52,11 +63,11 @@ export default class WorkshopItem extends Component {
                         width: null,
                         position: 'relative'
                     }} source={{
-                        uri: 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
+                        uri: `${image_url}`
                     }}/>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
-                    navigate('workshopShow', {w_id: this.props.w_id});
+                    navigate('workshopShow', {w_id: w_id});
                 }}>
                     <View style={{
                         position: 'relative',
@@ -77,11 +88,11 @@ export default class WorkshopItem extends Component {
                             fontSize: 20,
                             marginBottom: 10,
                             color: '#EF476F'
-                        }}>文字工作坊</Text>
+                        }}>{title}</Text>
                         <Text note style={{
                             lineHeight: 18,
-                        }}>重組文字，表達情感，點出故事賣點！重組文字，表達情感，點出故事賣點！重組文字，表達情感，點出故事賣點！重組文字，表達情感，點出故事賣點！重組文字，表達情感，點出故事賣點！</Text>
-                        <ProgressBar/>
+                        }}>{introduction}</Text>
+                        <ProgressBar percent={phase === 'investigating' ? attendees_number*100/min_number : 100}/>
                         <View style={{
                             flex: 1,
                             flexDirection: 'row',
@@ -90,24 +101,20 @@ export default class WorkshopItem extends Component {
                         }}>
                             <View style={{flexDirection: 'row'}}>
                                 <Icon style={{fontSize: 18, color: '#999', marginRight: 6}} name='flag' />
-                                <Text style={{color: '#999'}}>68% 達標</Text>
+                                <Text style={{color: '#999'}}>{phase === 'investigating' ? `${Math.ceil(attendees_number*100/min_number)}%達標` : `剩餘 ${max_number - attendees_number} 個座位`}</Text>
                             </View>
                             <View style={{flexDirection: 'row'}}>
                                 <Icon style={{fontSize: 18, color: '#999', marginRight: 6}} name='money' />
-                                <Text style={{color: '#999'}}>50 元</Text>
+                                <Text style={{color: '#999'}}>{`${price}元`}</Text>
                             </View>
                             <View style={{flexDirection: 'row'}}>
                                 <Icon style={{fontSize: 18, color: '#999', marginRight: 6}} name='calendar' />
-                                <Text style={{color: '#999'}}>27 天</Text>
+                                <Text style={{color: '#999'}}>{phase === 'investigating' ? `調查倒數 ${invest_countdown} 天` : `報名倒數 ${attend_countdown} 天`}</Text>
                             </View>
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
             </View>
         );
-    }
-
-    handlePressImage() {
-        // this.props.navigation.navigate('PostForm');
     }
 }
