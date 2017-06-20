@@ -89,7 +89,7 @@ function mapStateToProps({nav}) {
 
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
 
-const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'ideaStack'}));
+const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'auth'}));
 export const nav = (state = initialState, action) => {
     const nextState = AppNavigator.router.getStateForAction(action, state);
     return nextState || state;

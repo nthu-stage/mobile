@@ -47,8 +47,7 @@ class WorkshopScreen extends Component {
             stateFilter: 3,
             modalToggle: false,
             limit: 3,
-            hasMoreWorkshops: true,
-            listingWorkshops: 0
+            hasMoreWorkshops: true
         }
 
         this.handleRefresh = this.handleRefresh.bind(this);
@@ -69,7 +68,6 @@ class WorkshopScreen extends Component {
         if (workshopList !== nextProps.workshopList) {
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(nextProps.workshopList),
-                // listingWorkshops: nextProps.workshopList.length
             });
         }
     }
@@ -111,8 +109,7 @@ class WorkshopScreen extends Component {
     handleLoadMore() {
         const {searchText, stateFilter, limit, hasMoreWorkshops, listingWorkshops} = this.state;
         const {workshopList, workshopLoad} = this.props;
-        // if (listingWorkshops === workshopList.length)
-            this.props.listMoreWorkshop(searchText, stateFilter, workshopList.length, limit);
+        this.props.listMoreWorkshop(searchText, stateFilter, workshopList.length, limit);
     }
 
     handleFilter(f) {
