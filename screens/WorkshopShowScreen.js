@@ -35,7 +35,7 @@ import {
 } from 'native-base';
 import Geocoder from 'react-native-geocoding';
 import WorkshopShowItem from '../components/WorkshopShowItem';
-import {showWorkshop} from '../actions/workshop';
+import {showWorkshop, attendWorkshop} from '../actions/workshop';
 
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -57,6 +57,7 @@ class WorkshopShowScreen extends Component {
         }
 
         this.handleGoBack = this.handleGoBack.bind(this);
+        this.handleAttend = this.handleAttend.bind(this);
     }
     componentWillMount() {
         const {state} = this.props.navigation;
@@ -82,6 +83,7 @@ class WorkshopShowScreen extends Component {
     render() {
         const {bannerBackground, bannerTitle, H2LineHeight, textLineHeight, header, headerIcon} = styles;
         const {state} = this.props.navigation;
+        const {attended} = this.props.workshopShow;
         return (
             <Container>
                 <Content style={{
@@ -110,8 +112,8 @@ class WorkshopShowScreen extends Component {
                         </View>
                     </Content>
                     <Content padder>
-                        <Button block>
-                            <Text>我要報名</Text>
+                        <Button block onPress={this.handleAttend}>
+                            <Text>{attended ? `我要報名` : `取消報名`}</Text>
                         </Button>
                     </Content>
                     <Content padder>
@@ -144,8 +146,8 @@ class WorkshopShowScreen extends Component {
                         <Text style={textLineHeight}>有些人剛入門的時候就會買最頂尖最昂貴的攝影器材，但有時候不一定要用最昂貴的器材才能拍到好照片的。在不久之前才有一名 90 後攝影師用一部iPhone 拍出奪得 National Geographic 攝影比賽獎項，證明器材的平貴跟相片的好壞沒有一定關係，器材不是最重要的，一雙「攝影眼」才是拍出好相片的關鍵。</Text>
                     </Content>
                     <Content padder>
-                        <Button block>
-                            <Text>我要報名</Text>
+                        <Button block onPress={this.handleAttend}>
+                            <Text>{attended ? `我要報名` : `取消報名`}</Text>
                         </Button>
                     </Content>
                 </Content>
@@ -157,6 +159,11 @@ class WorkshopShowScreen extends Component {
     handleGoBack() {
         this.props.navigation.goBack();
     }
+
+    handleAttend() {
+        const {state} = this.props.navigation;
+        this.props.attendWorkshop(state.params.w_id);
+    }
 }
 
 function mapStateToProps({workshopShow}) {
@@ -165,7 +172,8 @@ function mapStateToProps({workshopShow}) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        showWorkshop
+        showWorkshop,
+        attendWorkshop
     }, dispatch);
 }
 
