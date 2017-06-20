@@ -62,7 +62,7 @@ class WorkshopShowScreen extends Component {
     componentWillMount() {
         const {state} = this.props.navigation;
         StatusBar.setBarStyle('light-content', true);
-        Geocoder.getFromLocation('清華大學實齋').then(json => {
+        Geocoder.getFromLocation(this.props.workshopShow.location).then(json => {
             var location = json.results[0].geometry.location;
             this.setState({
                 region: {
@@ -83,7 +83,24 @@ class WorkshopShowScreen extends Component {
     render() {
         const {bannerBackground, bannerTitle, H2LineHeight, textLineHeight, header, headerIcon} = styles;
         const {state} = this.props.navigation;
-        const {attended} = this.props.workshopShow;
+        const {
+            img_url,
+            start_datetime,
+            end_datetime,
+            location,
+            content,
+            title,
+            max_number,
+            min_number,
+            deadline,
+            pre_deadline,
+            introduction,
+            price,
+            attendees_number,
+            phase,
+            name,
+            attended
+        } = this.props.workshopShow;
         return (
             <Container>
                 <Content style={{
@@ -103,7 +120,7 @@ class WorkshopShowScreen extends Component {
                         <View style={bannerTitle}>
                             <H1 style={{
                                 color: 'white'
-                            }}>{`${this.props.workshopShow.title}文案工作坊`}</H1>
+                            }}>{`${title}`}</H1>
                         </View>
                         <View style={header}>
                             <Button transparent onPress={this.handleGoBack}>
@@ -120,12 +137,12 @@ class WorkshopShowScreen extends Component {
                         <Grid style={{
                             flexDirection: 'column'
                         }}>
-                            <WorkshopShowItem iconName="calendar" title="時間" subtitle="2017/06/03 03:21:26 ~ 2017/06/03 03:21:26"/>
-                            <WorkshopShowItem iconName="map-marker" title="地點" subtitle="清華大學實齋講堂"/>
-                            <WorkshopShowItem iconName="male" title="報名人數" subtitle="0/30"/>
-                            <WorkshopShowItem iconName="calendar-times-o" title="報名截止" subtitle="2017/06/03 03:21:26"/>
-                            <WorkshopShowItem iconName="money" title="價 格" subtitle="12342"/>
-                            <WorkshopShowItem padder={false} iconName="user" title={`講者${state.params.w_id}`} subtitle="賴詰凱"/>
+                            <WorkshopShowItem iconName="calendar" title="時間" subtitle={`${start_datetime} ~ ${end_datetime}`}/>
+                            <WorkshopShowItem iconName="map-marker" title="地點" subtitle={location}/>
+                            <WorkshopShowItem iconName="male" title="報名人數" subtitle={`${attendees_number}/${max_number}`}/>
+                            <WorkshopShowItem iconName="calendar-times-o" title="報名截止" subtitle={deadline}/>
+                            <WorkshopShowItem iconName="money" title="價 格" subtitle={price}/>
+                            <WorkshopShowItem padder={false} iconName="user" title="講者" subtitle={name}/>
                         </Grid>
                     </Content>
                     <Content>
@@ -134,16 +151,16 @@ class WorkshopShowScreen extends Component {
                             height: 120,
                             width: '100%'
                         }} region={this.state.region}>
-                            <MapView.Marker coordinate={this.state.region} title={'清大實齋'}/>
+                            <MapView.Marker coordinate={this.state.region} title={location}/>
                         </MapView>
                     </Content>
                     <Content padder>
                         <H2 style={H2LineHeight}>簡介</H2>
-                        <Text style={textLineHeight}>初階人像攝影工作坊，從基本觀念、拍攝所需至燈光運用，完整流程深入淺出一次瞭解。</Text>
+                        <Text style={textLineHeight}>{introduction}</Text>
                     </Content>
                     <Content padder>
                         <H2 style={H2LineHeight}>詳細介紹</H2>
-                        <Text style={textLineHeight}>有些人剛入門的時候就會買最頂尖最昂貴的攝影器材，但有時候不一定要用最昂貴的器材才能拍到好照片的。在不久之前才有一名 90 後攝影師用一部iPhone 拍出奪得 National Geographic 攝影比賽獎項，證明器材的平貴跟相片的好壞沒有一定關係，器材不是最重要的，一雙「攝影眼」才是拍出好相片的關鍵。</Text>
+                        <Text style={textLineHeight}>{content}</Text>
                     </Content>
                     <Content padder>
                         <Button block onPress={this.handleAttend}>
