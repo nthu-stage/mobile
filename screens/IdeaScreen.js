@@ -45,7 +45,7 @@ class IdeaScreen extends Component {
 
     constructor(props) {
         super(props);
-        
+
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => (r1.i_id !== r2.i_id) || (r1.like_number !== r2.like_number)
         });
@@ -61,7 +61,7 @@ class IdeaScreen extends Component {
         this.onUpdate = this.onUpdate.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleRefresh = this.handleRefresh.bind(this);
-        
+
     }
 
     componentWillMount() {
@@ -79,9 +79,8 @@ class IdeaScreen extends Component {
     componentWillReceiveProps(nextProps) {
         let ideaList = nextProps.ideaList;
         ideaList = ideaList.map(idea => Object.assign({}, idea));
-        console.log(nextProps.ideaList);
         this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(nextProps.ideaList),
+            dataSource: this.state.dataSource.cloneWithRows(ideaList),
             listingIdeas: nextProps.ideaList.length
         })
     }
@@ -109,8 +108,8 @@ class IdeaScreen extends Component {
                 {/*<ScrollView style={{
                     flex: 1
                 }}>*/}
-                   
-                    <ListView refreshControl={< RefreshControl refreshing = {ideaLoad} onRefresh = {this.handleRefresh} />} 
+
+                    <ListView refreshControl={< RefreshControl refreshing = {ideaLoad} onRefresh = {this.handleRefresh} />}
                     distanceToLoadMore={300} renderScrollComponent={props => {
                         return <InfiniteScrollView {...props}/>
                     }} dataSource={dataSource} renderRow={(idea) => {
