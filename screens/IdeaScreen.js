@@ -7,7 +7,8 @@ import {
     StyleSheet,
     ListView,
     Image,
-    Alert
+    Alert,
+    RefreshControl
 } from 'react-native';
 import {
     Container,
@@ -30,7 +31,8 @@ import Navbar from '../components/Navbar';
 import Segment from '../components/Segment';
 import IdeaItem from '../components/IdeaItem';
 import SearchModal from '../components/SearchModal';
-import {listIdea} from '../actions/idea';
+import {listIdea, listMoreIdea} from '../actions/idea';
+import InfiniteScrollView from 'react-native-infinite-scroll-view';
 
 class IdeaScreen extends Component {
     static navigationOptions = {
@@ -43,7 +45,7 @@ class IdeaScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.onUpdate = this.onUpdate.bind(this);
+        
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => (r1.i_id !== r2.i_id) || (r1.like_number !== r2.like_number)
         });
@@ -51,8 +53,15 @@ class IdeaScreen extends Component {
             order: 'new',
             modalToggle: false,
             searchText: '',
-            dataSource: ds.cloneWithRows([])
+            dataSource: ds.cloneWithRows([]),
+            hasMoreIdeas:true,
+            limit:4,
         };
+
+        this.onUpdate = this.onUpdate.bind(this);
+        this.handleLoadMore = this.handleLoadMore.bind(this);
+        this.handleRefresh = this.handleRefresh.bind(this);
+        
     }
 
     componentWillMount() {
@@ -70,24 +79,48 @@ class IdeaScreen extends Component {
     componentWillReceiveProps(nextProps) {
         let ideaList = nextProps.ideaList;
         ideaList = ideaList.map(idea => Object.assign({}, idea));
+        console.log(nextProps.ideaList);
         this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(ideaList)
+            dataSource: this.state.dataSource.cloneWithRows(nextProps.ideaList),
+            listingIdeas: nextProps.ideaList.length
         })
+    }
+    handleRefresh(){
+        this.props.listIdea(this.state.searchText, this.state.order);
+    }
+    handleLoadMore(){
+        console.log("load more")
+        const {searchText, order, limit, hasMoreWorkshops, listingIdeas} = this.state;
+        const {ideaList, ideaLoad} = this.props;
+        if (listingIdeas === ideaList.length)
+        console.log("load more2")
+            this.props.listMoreIdea(searchText, order, ideaList.length, limit);
     }
 
     render() {
         const {order, modalToggle, searchText, dataSource} = this.state;
+        const {ideaLoad, ideaList } = this.props;
         return (
             <View style={styles.container}>
                 <Navbar title="許願池" right={< SearchModal passbackSearchText = {
                     e => this.setState({searchText: e})
                 } />}/>
                 <Segment left="熱門" right="最新" onUpdate={this.onUpdate}/>
-                <ScrollView style={{
+                {/*<ScrollView style={{
                     flex: 1
-                }}>
-                    <ListView enableEmptySections dataSource={dataSource} renderRow={(idea) => <IdeaItem content={idea} navigation={this.props.navigation}/>}/>
-                </ScrollView>
+                }}>*/}
+                   
+                    <ListView refreshControl={< RefreshControl refreshing = {ideaLoad} onRefresh = {this.handleRefresh} />} 
+                    distanceToLoadMore={300} renderScrollComponent={props => {
+                        return <InfiniteScrollView {...props}/>
+                    }} dataSource={dataSource} renderRow={(idea) => {
+                        return <IdeaItem key={idea.i_id} navigation={this.props.navigation} content={idea}/>;
+                    }} canLoadMore={() => {
+                        if (ideaLoad || !ideaList.length)
+                            return false;
+                        return this.state.hasMoreIdeas;
+                    }} onLoadMoreAsync={this.handleLoadMore} enableEmptySections={true}/>
+                {/*</ScrollView>*/}
             </View>
         );
     }
@@ -100,13 +133,14 @@ const styles = StyleSheet.create({
     }
 })
 
-function mapStateToProps({ideaList}) {
-    return {ideaList}
+function mapStateToProps({ideaList, ideaLoad}) {
+    return {ideaList, ideaLoad}
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        listIdea
+        listIdea,
+        listMoreIdea
     }, dispatch);
 }
 
