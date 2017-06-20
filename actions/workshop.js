@@ -2,7 +2,8 @@ import {deliverAlert} from './common';
 import {
     listWorkshop as listWorkshopFromApi,
     listMoreWorkshop as listMoreWorkshopFromApi,
-    showWorkshop as showWorkshopFromApi
+    showWorkshop as showWorkshopFromApi,
+    attendWorkshop as attendWorkshopFromApi
 } from '../api/workshop';
 
 export const listWorkshop = (searchText, stateFilter) => async (dispatch, getState) => {
@@ -25,4 +26,10 @@ export const showWorkshop = (w_id) => async (dispatch, getState) => {
     const res = await showWorkshopFromApi(getState().auth, w_id);
     const data = await res.json();
     dispatch({type: '@WORKSHOP/SHOW', payload: data});
+}
+
+export const attendWorkshop = (w_id) => async (dispatch, getState) => {
+    const res = await attendWorkshopFromApi(getState().auth, w_id);
+    const data = await res.json();
+    dispatch({type: '@WORKSHOP/ATTEND', payload: data});
 }
