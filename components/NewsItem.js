@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {
     ListItem,
     Thumbnail,
@@ -17,16 +17,17 @@ export default class NewsItem extends Component {
         name: '',
         picture_url: '',
         target: '',
-        target_id: '',
+        target_id: ''
     };
 
     action2sentence(action) {
-        return {
-            'propose': '籌辦了一場工作坊',
-            'attend': '參加了一場工作坊',
-            'come_up_with': '許下了一個願望',
-            'like': '喜歡了一個願望',
-        }[action];
+        return {'propose': '籌辦了一場工作坊', 'attend': '參加了一場工作坊', 'come_up_with': '許下了一個願望', 'like': '喜歡了一個願望'}[action];
+    }
+
+    constructor(props) {
+        super(props);
+
+        this.onPress = this.onPress.bind(this);
     }
 
     action2icon(action) {
@@ -34,22 +35,35 @@ export default class NewsItem extends Component {
             'propose': 'users',
             'attend': 'user-plus',
             'come_up_with': 'gift',
-            'like': 'heart',
+            'like': 'heart'
         }[action];
         const iconColor = {
             'propose': '#145C9E',
             'attend': '#145C9E',
             'come_up_with': '#7E52A0',
-            'like': '#EF476F',
+            'like': '#EF476F'
         }[action];
-        return {
-            iconName,
-            iconColor
+        return {iconName, iconColor}
+    }
+
+    onPress() {
+        const {action, target_id, navigation} = this.props;
+        if (action === 'propose' || action === 'attend') {
+            navigation.navigate('workshopNewsShow', {w_id: target_id});
+        } else if (action === 'come_up_with' || action === 'like') {
+            navigation.navigate('ideaNewsShow', {i_id: target_id});
         }
     }
 
     render() {
-        const {action, name, picture_url, target, target_id, last} = this.props;
+        const {
+            action,
+            name,
+            picture_url,
+            target,
+            target_id,
+            last
+        } = this.props;
         const {iconCornerCotainer, iconCornerBorder, iconCorner} = styles;
         const sentence = this.action2sentence(action);
         const {iconName, iconColor} = this.action2icon(action);
@@ -57,22 +71,33 @@ export default class NewsItem extends Component {
         return (
             <ListItem avatar last={last}>
                 <Left>
-                    <Thumbnail small source={{
-                        uri: picture_url
-                    }}/>
-                    <View style={iconCornerCotainer}>
-                        <View style={{...iconCornerBorder, borderColor: iconColor}}>
-                            <Icon style={{...iconCorner, color: iconColor}} name={iconName}/>
+                    <TouchableOpacity onPress={this.onPress}>
+                        <Thumbnail small source={{
+                            uri: picture_url
+                        }}/>
+                        <View style={iconCornerCotainer}>
+                            <View style={{
+                                ...iconCornerBorder,
+                                borderColor: iconColor
+                            }}>
+                                <Icon style={{
+                                    ...iconCorner,
+                                    color: iconColor
+                                }} name={iconName}/>
+                            </View>
                         </View>
-                    </View>
-
+                    </TouchableOpacity>
                 </Left>
                 <Body>
-                    <Text>{name}</Text>
-                    <Text note>{`${sentence}：${target}`}</Text>
+                    <TouchableOpacity onPress={this.onPress}>
+                        <Text>{name}</Text>
+                        <Text note>{`${sentence}：${target}`}</Text>
+                    </TouchableOpacity>
                 </Body>
                 <Right>
-                    <Icon name="angle-right"/>
+                    <TouchableOpacity onPress={this.onPress}>
+                        <Icon name="angle-right"/>
+                    </TouchableOpacity>
                 </Right>
             </ListItem>
         );
@@ -98,6 +123,6 @@ const styles = {
     iconCorner: {
         width: 10,
         height: 10,
-        fontSize: 10,
+        fontSize: 10
     }
 }

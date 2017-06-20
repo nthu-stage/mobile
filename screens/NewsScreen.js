@@ -76,7 +76,7 @@ class NewsScreen extends Component {
                 </Separator>
             );
         }
-        return <NewsItem {...rowData}/>;
+        return <NewsItem {...rowData} navigation={this.props.navigation}/>;
     }
 
     componentWillReceiveProps(nextProps) {

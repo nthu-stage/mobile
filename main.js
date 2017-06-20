@@ -51,8 +51,18 @@ export const AppNavigator = TabNavigator({
                     }
                 }, {headerMode: 'none'})
             },
-            news: {
-                screen: NewsScreen
+            newsStack: {
+                screen: StackNavigator({
+                    news: {
+                        screen: NewsScreen
+                    },
+                    workshopNewsShow: {
+                        screen: WorkshopShowScreen
+                    },
+                    ideaNewsShow: {
+                        screen: IdeaShowScreen
+                    }
+                }, {headerMode: 'none'})
             },
             profileStack: {
                 screen: StackNavigator({
@@ -107,7 +117,7 @@ function mapStateToProps({nav}) {
 
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
 
-const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'workshopStack'}));
+const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'news'}));
 export const nav = (state = initialState, action) => {
     const nextState = AppNavigator.router.getStateForAction(action, state);
     return nextState || state;
