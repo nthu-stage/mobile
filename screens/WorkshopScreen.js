@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { listWorkshop } from '../actions/workshop';
-import { View, StyleSheet, ListView, Imagem, RefreshControl } from 'react-native';
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {listWorkshop} from '../actions/workshop';
+import {View, StyleSheet, ListView, Imagem, RefreshControl} from 'react-native';
 import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import {
     Container,
@@ -12,7 +12,6 @@ import {
     Title,
     Right,
     Content,
-    Segment,
     Button,
     Icon,
     List,
@@ -22,6 +21,8 @@ import {
     Thumbnail,
     Text
 } from 'native-base';
+import Navbar from '../components/Navbar';
+import Segment from '../components/Segment';
 import SearchModal from '../components/SearchModal'
 import WorkshopItem from '../components/WorkshopItem';
 
@@ -29,8 +30,12 @@ import WorkshopItem from '../components/WorkshopItem';
 class WorkshopScreen extends Component {
     static navigationOptions = {
         tabBarLabel: '工作坊',
-        tabBarIcon: ({tintColor}) => <Icon style={{color: tintColor, fontSize: 24}} name='users'/>
+        tabBarIcon: ({tintColor}) => <Icon style={{
+                color: tintColor,
+                fontSize: 24
+            }} name='users'/>
     };
+
     constructor(props) {
         super(props);
 
@@ -48,6 +53,7 @@ class WorkshopScreen extends Component {
         this.handleFilter = this.handleFilter.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
     }
+
     componentWillMount() {
         this.props.listWorkshop(this.state.searchText, this.state.stateFilter);
     }
@@ -63,63 +69,52 @@ class WorkshopScreen extends Component {
     render() {
         const {workshopList, navigation} = this.props;
         const {stateFilter} = this.state;
-        let prop = stateFilter >> 1, goal = stateFilter & 1;
-      return (
-          <Container>
-              <Header>
-                  <Left></Left>
-                  <Body>
-                      <Title>工作坊</Title>
-                  </Body>
-                  <Right>
-                      <SearchModal passbackSearchText={e => this.handleSearch(e)} />
-                  </Right>
-              </Header>
-              <Segment>
-                  <Button first active={prop ? true : false} onPress={e => this.handleFilter(1 - prop, goal)}>
-                      <Text>調查中</Text>
-                  </Button>
-                  <Button last active={goal ? true : false} onPress={e => this.handleFilter(prop, 1 - goal)}>
-                      <Text>已達標</Text>
-                  </Button>
-              </Segment>
-              <ListView
-                  refreshControl={
-                      <RefreshControl refreshing={false} onRefresh={this.handleRefresh} />
-                  }
-                  distanceToLoadMore={300}
-                  renderScrollComponent={props =>{
-                      return <InfiniteScrollView {...props} />
-                  }}
-                  dataSource={this.state.dataSource}
-                  renderRow={(workshop) => {
-                      return <WorkshopItem key={workshop.w_id} navigation={this.props.navigation} {...workshop} />;
-                  }}
-                  canLoadMore={() => {
-                      return false;
-                  }}
-                  onLoadMoreAsync={this.handleLoadMore}
-                  enableEmptySections={true}
-                  style={{backgroundColor: 'white'}}
-              />
-          </Container>
+        let prop = stateFilter >> 1,
+            goal = stateFilter & 1;
+        return (
+            <View style={styles.container}>
+                <Navbar title="工作坊" right={< SearchModal passbackSearchText = {
+                    e => this.handleSearch(e)
+                } />}/>
+                <Segment multiple left="調查中" right="已達標" onUpdate={this.handleFilter}/>
+                <ListView refreshControl={< RefreshControl refreshing = {
+                    false
+                }
+                onRefresh = {
+                    this.handleRefresh
+                } />} distanceToLoadMore={300} renderScrollComponent={props => {
+                    return <InfiniteScrollView {...props}/>
+                }} dataSource={this.state.dataSource} renderRow={(workshop) => {
+                    return <WorkshopItem key={workshop.w_id} navigation={this.props.navigation} {...workshop}/>;
+                }} canLoadMore={() => {
+                    return false;
+                }} onLoadMoreAsync={this.handleLoadMore} enableEmptySections={true}/>
+            </View>
         );
-     }
+    }
 
-     handleRefresh() {
+    handleRefresh() {
         const {searchText, stateFilter} = this.state;
         this.props.listWorkshop(searchText, stateFilter);
-     }
+    }
 
-     handleLoadMore() {
+    handleLoadMore() {
         // const {listingMorePosts, dispatch, posts, searchText} = this.props;
         // const start = posts[posts.length - 1].id;
         // if (listingMorePosts !== start)
         //     dispatch(listMorePosts(searchText, start));
     }
 
-    handleFilter(prop, goal) {
-        this.setState({stateFilter: (prop << 1) + goal});
+    handleFilter(f) {
+        const prop = f[0]
+                ? 1
+                : 0,
+            goal = f[1]
+                ? 1
+                : 0;
+        this.setState({
+            stateFilter: (prop << 1) + goal
+        });
         this.props.listWorkshop(this.state.searchText, (prop << 1) + goal);
     }
 
@@ -130,6 +125,13 @@ class WorkshopScreen extends Component {
         }
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fcfcfc'
+    }
+})
 
 function mapStateToProps({workshopList}) {
     return {workshopList}
