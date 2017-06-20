@@ -5,7 +5,6 @@ const signedRequest = 'GvbV-X3K-8j041Bw_U3SDSG6vECGGvFaB6m2dvD0PQQ.eyJhbGdvcml0a
 export function registerOrLogin(fb) {
     let url = `${baseUrl}/profile`;
     let {userID, accessToken} = fb;
-    console.log(userID, accessToken);
     return fetch(url, {
         method: 'POST',
         headers: {
@@ -16,5 +15,19 @@ export function registerOrLogin(fb) {
             accessToken
         },
         body: JSON.stringify(fb)
+    });
+}
+
+export function showProfile(fb) {
+    let url = `${baseUrl}/profile`;
+    let {userID, accessToken} = fb;
+    return fetch(url, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            userID,
+            signedRequest,
+            accessToken
+        }
     });
 }
