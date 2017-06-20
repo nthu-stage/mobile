@@ -9,6 +9,16 @@ export function WorkshopLoadingReducer(state = false, action) {
     }
 }
 
+export function IdeaLoadingReducer(state = false, action) {
+    switch (action.type) {
+        case '@IDEALOADING/START_LOADING':
+            return true;
+        case '@IDEALOADING/END_LOADING':
+            return false;
+        default:
+            return state;
+    }
+}
 export function NewsLoadingReducer(state = false, action) {
     switch (action.type) {
         case '@NEWSLOADING/START_LOADING':

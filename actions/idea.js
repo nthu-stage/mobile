@@ -5,9 +5,19 @@ import {
 } from '../api/idea';
 
 export const listIdea = (searchText, order) => async (dispatch, getState) => {
+    dispatch({type: '@IDEALOADING/START_LOADING'});
     const res = await listIdeaFromApi(getState().auth, searchText, order);
     const data = await res.json();
-    dispatch({type: '@IDEA/LIST', payload: data});
+    await dispatch({type: '@IDEA/LIST', payload: data});
+    dispatch({type: '@IDEALOADING/END_LOADING'});
+}
+export const listMoreIdea = (searchText, order, offset, limit) => async (dispatch, getState) => {
+    dispatch({type: '@IDEALOADING/START_LOADING'});
+    const res = await listIdeaFromApi(getState().auth, searchText, order, offset, limit);
+    const data = await res.json();
+    console.log(data);
+    await dispatch({type: '@IDEA/LIST_MORE', payload: data});
+    dispatch({type: '@IDEALOADING/END_LOADING'});
 }
 export const showIdea = (i_id) => async (dispatch, getState) => {
     i_id = parseInt(i_id, 10);
