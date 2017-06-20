@@ -1,3 +1,4 @@
+
 const initialState = {
     name: null,
     email: null,
@@ -5,6 +6,7 @@ const initialState = {
     userID: null,
     accessToken: null,
 };
+
 
 export function FacebookLoginReducer(state = initialState, action) {
     switch (action.type) {

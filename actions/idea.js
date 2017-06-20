@@ -23,3 +23,9 @@ export const likeSearchIdea = (i_id) => async (dispatch, getState) => {
     console.log(data);
     dispatch({type: '@IDEA/LIKE_LIST', payload: data});
 }
+export const likeViewEditIdea = (i_id) => async (dispatch, getState) => {
+    i_id = parseInt(i_id, 10);
+    const res = await likeIdeaFromApi(getState().auth, i_id);
+    const data = await res.json();
+    dispatch({type: '@IDEA/LIKE_SHOW', payload: data});
+}
