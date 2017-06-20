@@ -105,10 +105,10 @@ class ProfileScreen extends Component {
                         </Right>
                     </ListItem>
                     <ProfileItem icon="calendar" iconColor="grey" title="平常有空的時間"/>
-                    <ProfileItem onPress={e => navigate('workshopList', {title: '我提案的工作坊', dataArray: propose})} icon="users" iconColor="#145C9E" title="我提案的工作坊"/>
-                    <ProfileItem onPress={e => navigate('workshopList', {title: '我報名的工作坊', dataArray: attend})} icon="user-plus" iconColor="#145C9E" title="我報名的工作坊"/>
-                    <ProfileItem onPress={e => navigate('ideaList', {title: '我許下的願望', dataArray: comeUpWith})} icon="gift" iconColor="#7E52A0" title="我許下的願望"/>
-                    <ProfileItem onPress={e => navigate('ideaList', {title: '我喜歡的願望', dataArray: like})} icon="heart" iconColor="#EF476F" title="我喜歡的願望"/>
+                    <ProfileItem onPress={e => navigate('workshopListStack', {title: '我提案的工作坊', dataArray: propose})} icon="users" iconColor="#145C9E" title="我提案的工作坊"/>
+                    <ProfileItem onPress={e => navigate('workshopListStack', {title: '我報名的工作坊', dataArray: attend})} icon="user-plus" iconColor="#145C9E" title="我報名的工作坊"/>
+                    <ProfileItem onPress={e => navigate('ideaListStack', {title: '我許下的願望', dataArray: comeUpWith})} icon="gift" iconColor="#7E52A0" title="我許下的願望"/>
+                    <ProfileItem onPress={e => navigate('ideaListStack', {title: '我喜歡的願望', dataArray: like})} icon="heart" iconColor="#EF476F" title="我喜歡的願望"/>
                 </ScrollView>
             </View>
         );

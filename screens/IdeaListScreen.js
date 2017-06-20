@@ -11,6 +11,7 @@ import {
     List,
     Text
 } from 'native-base';
+import {NavigationActions} from 'react-navigation';
 import Navbar from '../components/Navbar';
 import IdeaListItem from '../components/IdeaListItem';
 
@@ -25,11 +26,13 @@ export default class IdeaListScreen extends Component {
 
     constructor(props) {
         super(props);
+
+        this.renderRow = this.renderRow.bind(this);
     }
 
     renderGoBackIcon() {
         return (
-            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+            <TouchableOpacity onPress={() => this.props.navigation.dispatch(NavigationActions.back())}>
                 <Icon name="angle-left"/>
             </TouchableOpacity>
         );
@@ -37,7 +40,7 @@ export default class IdeaListScreen extends Component {
 
     renderRow(rowData) {
         return (
-            <IdeaListItem {...rowData}/>
+            <IdeaListItem {...rowData} navigation={this.props.navigation}/>
         );
     }
 

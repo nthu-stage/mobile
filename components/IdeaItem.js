@@ -36,9 +36,9 @@ class IdeaItem extends Component {
         this.handlePress = this.handlePress.bind(this);
         this.handleLike = this.handleLike.bind(this);
 
-        const {uri, idea_type, skill, goal, like_number, liked} = this.props.content;
+        const {picture_url, idea_type, skill, goal, like_number, liked} = this.props.content;
         this.state = {
-            uri,
+            picture_url,
             idea_type,
             skill,
             goal,
@@ -70,8 +70,7 @@ class IdeaItem extends Component {
     }
 
     render() {
-        const { uri, idea_type, skill, goal, like_number, liked }=this.state;
-        const _uri = uri? uri: this.state.uri;
+        const { picture_url, idea_type, skill, goal, like_number, liked }=this.state;
         return (
             <TouchableOpacity onPress={this.handlePress}>
             <View style={{
@@ -98,7 +97,7 @@ class IdeaItem extends Component {
                         borderRadius: 10,
                         marginRight: 10
                     }} source={{
-                        uri: _uri,
+                        uri: picture_url,
                     }}/>
                     <LinearGradient locations={[0, 1]} colors={['rgba(255, 255, 255, 0)', 'black']} style={{
                         position: 'absolute',

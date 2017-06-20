@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Icon} from 'native-base';
 
 export default class WorkshopListItem extends Component {
@@ -15,7 +15,7 @@ export default class WorkshopListItem extends Component {
         const m = {
             'judging': '#0275d8',
             'judge_na': '#d9534f',
-            'investigating': '#f0ad4e',
+            'judge_ac': '#f0ad4e',
             'unreached': '#d9534f',
             'reached': '#5cb85c',
             'over': '#636c72'
@@ -32,12 +32,17 @@ export default class WorkshopListItem extends Component {
     }
 
     render() {
+        console.log('WorkshopListItem', this.props);
         const {container, badgeContainer, titleContainer} = styles;
-        const {state, title, date} = this.props;
+        const {w_id, state, title, date} = this.props;
         const {badge, badgeColor} = this.state2badge(state);
         return (
-            <View style={container}>
-                <View style={[badgeContainer, {backgroundColor: badgeColor}]}>
+            <TouchableOpacity style={container} onPress={() => this.props.navigation.navigate('workshopListShow', {w_id})}>
+                <View style={[
+                    badgeContainer, {
+                        backgroundColor: badgeColor
+                    }
+                ]}>
                     <Text style={{
                         color: 'white',
                         fontSize: 12
@@ -46,7 +51,8 @@ export default class WorkshopListItem extends Component {
                 <View style={titleContainer}>
                     <View>
                         <Text style={{
-                            fontSize: 18,
+                            fontSize: 14,
+                            lineHeight: 16,
                             marginBottom: 6
                         }}>{title}</Text>
                         <Text style={{
@@ -54,12 +60,13 @@ export default class WorkshopListItem extends Component {
                             color: 'gray'
                         }}>{date}</Text>
                     </View>
+
                     <Icon name="angle-right" style={{
                         fontSize: 18,
                         color: '#999'
                     }}/>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 }

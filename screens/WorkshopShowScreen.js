@@ -7,7 +7,9 @@ import {
     StyleSheet,
     Dimensions,
     StatusBar,
-    Platform
+    Platform,
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 import {MapView} from 'expo';
 import {
@@ -34,6 +36,8 @@ import {
     Col
 } from 'native-base';
 import Geocoder from 'react-native-geocoding';
+
+import Navbar from '../components/Navbar';
 import WorkshopShowItem from '../components/WorkshopShowItem';
 import {showWorkshop, attendWorkshop} from '../actions/workshop';
 
@@ -45,6 +49,14 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 Geocoder.setApiKey('AIzaSyCODRhTy6XDPgLntVyqTio29sGjQ6wnfok');
 
 class WorkshopShowScreen extends Component {
+    static navigationOptions = {
+        tabBarLabel: '工作坊',
+        tabBarIcon: ({tintColor}) => <Icon style={{
+                color: tintColor,
+                fontSize: 24
+            }} name='users'/>
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -56,9 +68,9 @@ class WorkshopShowScreen extends Component {
             }
         }
 
-        this.handleGoBack = this.handleGoBack.bind(this);
         this.handleAttend = this.handleAttend.bind(this);
     }
+
     componentWillMount() {
         const {state} = this.props.navigation;
         StatusBar.setBarStyle('light-content', true);
@@ -80,8 +92,26 @@ class WorkshopShowScreen extends Component {
         this.props.showWorkshop(state.params.w_id);
     }
 
+    renderGoBackIcon() {
+        return (
+            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                <Icon name="angle-left"/>
+            </TouchableOpacity>
+        );
+    }
+
+    handleAttend() {
+        const {state} = this.props.navigation;
+        this.props.attendWorkshop(state.params.w_id);
+    }
+
     render() {
-        const {bannerBackground, bannerTitle, H2LineHeight, textLineHeight, header, headerIcon} = styles;
+        const {
+            container,
+            contentContainer,
+            H2LineHeight,
+            textLineHeight,
+        } = styles;
         const {state} = this.props.navigation;
         const {
             image_url,
@@ -101,85 +131,67 @@ class WorkshopShowScreen extends Component {
             name,
             attended
         } = this.props.workshopShow;
+
         return (
-            <Container>
-                <Content style={{
-                    flex: 1,
-                    backgroundColor: 'white'
-                }}>
-                    <Content>
-                        <Image style={{
-                            position: 'relative',
-                            resizeMode: 'cover',
-                            height: 180,
-                            width: null
-                        }} source={{
-                            uri: `${image_url}`
-                        }}/>
-                        <View style={bannerBackground}/>
-                        <View style={bannerTitle}>
-                            <H1 style={{
-                                color: 'white'
-                            }}>{`${title}`}</H1>
-                        </View>
-                        <View style={header}>
-                            <Button transparent onPress={this.handleGoBack}>
-                                <Icon style={headerIcon} name='angle-left'/>
-                            </Button>
-                        </View>
-                    </Content>
-                    <Content padder>
-                        <Button block onPress={this.handleAttend}>
-                            <Text>{attended ? `我要報名` : `取消報名`}</Text>
-                        </Button>
-                    </Content>
-                    <Content padder>
-                        <Grid style={{
-                            flexDirection: 'column'
+            <View style={container}>
+                <Navbar left={this.renderGoBackIcon()} title={title}/>
+                <ScrollView>
+                    <Image style={{
+                        position: 'relative',
+                        resizeMode: 'cover',
+                        height: 200,
+                        width: null
+                    }} source={{
+                        uri: `${image_url}`
+                    }}/>
+                    <View style={contentContainer}>
+                        <Button onPress={this.handleAttend} danger={!attended} style={{
+                            width: '100%',
+                            justifyContent: 'center',
+                            alignItems: 'center'
                         }}>
-                            <WorkshopShowItem iconName="calendar" title="時間" subtitle={`${start_datetime} ~ ${end_datetime}`}/>
-                            <WorkshopShowItem iconName="map-marker" title="地點" subtitle={location}/>
-                            <WorkshopShowItem iconName="male" title="報名人數" subtitle={`${attendees_number}/${max_number}`}/>
-                            <WorkshopShowItem iconName="calendar-times-o" title="報名截止" subtitle={deadline}/>
-                            <WorkshopShowItem iconName="money" title="價 格" subtitle={price}/>
-                            <WorkshopShowItem padder={false} iconName="user" title="講者" subtitle={name}/>
-                        </Grid>
-                    </Content>
-                    <Content>
+                            <Text>{attended
+                                    ? `我要報名`
+                                    : `取消報名`}</Text>
+                        </Button>
+                        <WorkshopShowItem iconName="calendar" title="開始時間" subtitle={`${start_datetime}`}/>
+                        <WorkshopShowItem iconName="calendar" title="結束時間" subtitle={`${end_datetime}`}/>
+
+                        <WorkshopShowItem iconName="map-marker" title="地點" subtitle={location}/>
+                        <WorkshopShowItem iconName="male" title="報名人數" subtitle={`${attendees_number}/${max_number}`}/>
+                        <WorkshopShowItem iconName="calendar-times-o" title="報名截止" subtitle={deadline}/>
+                        <WorkshopShowItem iconName="money" title="價 格" subtitle={price}/>
+                        <WorkshopShowItem padder={false} iconName="user" title="講者" subtitle={name}/>
                         <MapView style={{
                             flex: 1,
                             height: 120,
-                            width: '100%'
+                            width: '100%',
+                            marginTop: 6,
                         }} region={this.state.region}>
                             <MapView.Marker coordinate={this.state.region} title={location}/>
                         </MapView>
-                    </Content>
-                    <Content padder>
-                        <H2 style={H2LineHeight}>簡介</H2>
+                    </View>
+                    <View style={contentContainer}>
+                        <Text style={H2LineHeight}>簡介</Text>
                         <Text style={textLineHeight}>{introduction}</Text>
-                    </Content>
-                    <Content padder>
-                        <H2 style={H2LineHeight}>詳細介紹</H2>
+                    </View>
+                    <View style={contentContainer}>
+                        <Text style={H2LineHeight}>詳細介紹</Text>
                         <Text style={textLineHeight}>{content}</Text>
-                    </Content>
-                    <Content padder>
-                        <Button block onPress={this.handleAttend}>
-                            <Text>{attended ? `我要報名` : `取消報名`}</Text>
+                        <Button onPress={this.handleAttend} danger={!attended} style={{
+                            width: '100%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginTop: 10,
+                        }}>
+                            <Text>{attended
+                                    ? `我要報名`
+                                    : `取消報名`}</Text>
                         </Button>
-                    </Content>
-                </Content>
-            </Container>
-
+                    </View>
+                </ScrollView>
+            </View>
         );
-    }
-
-    handleGoBack() {
-        this.props.navigation.goBack();
-    }
-
-    handleAttend() {
-        const {state} = this.props.navigation;
-        this.props.attendWorkshop(state.params.w_id);
     }
 }
 
@@ -196,38 +208,30 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkshopShowScreen);
 
-const TOOLBAR_HEIGHT = Platform.OS === 'ios'
-    ? 84
-    : 56;
-
 const styles = {
-    bannerBackground: {
-        height: 180,
-        width: '100%',
-        backgroundColor: 'black',
-        opacity: 0.6,
-        position: 'absolute'
-    },
-    bannerTitle: {
-        height: 180,
-        width: '100%',
+    container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute'
+        backgroundColor: '#fcfcfc'
     },
-    header: {
-        height: TOOLBAR_HEIGHT,
-        width: '100%',
-        paddingTop: 20,
-        position: 'absolute'
-    },
-    headerIcon: {
-        color: 'white',
-        fontSize: 36
+    contentContainer: {
+        position: 'relative',
+        top: -40,
+        backgroundColor: 'white',
+        margin: 10,
+        marginTop: 0,
+        padding: 16,
+        borderRadius: 10,
+        shadowColor: 'gray',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 3
     },
     H2LineHeight: {
-        lineHeight: 42,
+        fontSize: 20,
+        marginBottom: 8,
         textAlign: 'center'
     },
     textLineHeight: {

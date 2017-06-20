@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {View} from 'react-native';
 import {Row, Col, Icon, Text} from 'native-base';
 
 export default class WorkshopShowItem extends Component {
@@ -8,12 +9,14 @@ export default class WorkshopShowItem extends Component {
 
     render() {
         return (
-            <Row style={{
+            <View style={{
                 flex: 1,
+                flexDirection: 'row',
                 alignItems: 'center',
-                marginBottom: this.props.padder ? 24 : 0,
+                marginTop: 10,
+                marginBottom: 10,
             }}>
-                <Col style={{
+                <View style={{
                     width: 20,
                     marginRight: 10
                 }}>
@@ -22,12 +25,16 @@ export default class WorkshopShowItem extends Component {
                         color: 'gray',
                         textAlign: 'center'
                     }} name={this.props.iconName}/>
-                </Col>
-                <Col>
+                </View>
+                <View style={{
+                    flex: 1
+                }}>
+                    <Text note style={{
+                        marginBottom: 4,
+                    }}>{this.props.title}</Text>
                     <Text>{this.props.subtitle}</Text>
-                    <Text note>{this.props.title}</Text>
-                </Col>
-            </Row>
+                </View>
+            </View>
         );
     }
 }
