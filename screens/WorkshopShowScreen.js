@@ -84,7 +84,7 @@ class WorkshopShowScreen extends Component {
         const {bannerBackground, bannerTitle, H2LineHeight, textLineHeight, header, headerIcon} = styles;
         const {state} = this.props.navigation;
         const {
-            img_url,
+            image_url,
             start_datetime,
             end_datetime,
             location,
@@ -114,7 +114,7 @@ class WorkshopShowScreen extends Component {
                             height: 180,
                             width: null
                         }} source={{
-                            uri: 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
+                            uri: `${image_url}`
                         }}/>
                         <View style={bannerBackground}/>
                         <View style={bannerTitle}>
