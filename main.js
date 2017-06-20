@@ -21,6 +21,10 @@ import reducers from './reducers';
 
 import getStore from './reducers/index'
 
+console.ignoredYellowBox = [
+  'Warning: View.propTypes',
+];
+
 export const AppNavigator = TabNavigator({
     auth: {
         screen: AuthScreen
@@ -89,7 +93,7 @@ function mapStateToProps({nav}) {
 
 const AppWithNavState = connect(mapStateToProps)(AppWithStyleAndNavigator);
 
-const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'auth'}));
+const initialState = AppNavigator.router.getStateForAction(NavigationActions.navigate({routeName: 'workshopStack'}));
 export const nav = (state = initialState, action) => {
     const nextState = AppNavigator.router.getStateForAction(action, state);
     return nextState || state;
