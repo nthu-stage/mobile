@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {View, ScrollView, StyleSheet} from 'react-native';
+import {View, ScrollView, ListView, RefreshControl, StyleSheet} from 'react-native';
 import moment from 'moment';
 import {
     Container,
@@ -36,28 +36,18 @@ class NewsScreen extends Component {
         super(props);
 
         this.renderRow = this.renderRow.bind(this);
+        this.refreshControl = this.refreshControl.bind(this);
+        this.onRefresh = this.onRefresh.bind(this);
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2
+        });
         this.state = {
-            dataSource: [
-                {
-                    type: 'separator',
-                    data: '10 小時前'
-                },
-                1,
-                2, {
-                    type: 'separator',
-                    data: '三天前'
-                },
-                3,
-                4, {
-                    type: 'separator',
-                    data: '七天前'
-                },
-                5,
-                6,
-                7,
-                8
-            ]
-        }
+            dataSource: ds.cloneWithRows([])
+        };
+    }
+
+    componentWillMount() {
+        this.props.listNews();
     }
 
     source2data(source) {
@@ -70,19 +60,12 @@ class NewsScreen extends Component {
                 if (current !== null) {
                     data[data.length - 1].last = true;
                 }
-                data.push({
-                    type: 'separator',
-                    title: key,
-                });
+                data.push({type: 'separator', title: key});
                 current = key;
             }
             data.push(s);
         }
         return data;
-    }
-
-    componentWillMount() {
-        this.props.listNews();
     }
 
     renderRow(rowData) {
@@ -96,15 +79,25 @@ class NewsScreen extends Component {
         return <NewsItem {...rowData}/>;
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(this.source2data(nextProps.news))
+        });
+    }
+
+    refreshControl() {
+        return (<RefreshControl refreshing={this.props.newsLoad} onRefresh={this.onRefresh}/>);
+    }
+
+    onRefresh() {
+        this.props.listNews();
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <Navbar title="動態消息"/>
-                <ScrollView style={{
-                    flex: 1
-                }}>
-                    <List dataArray={this.source2data(this.props.news)} renderRow={this.renderRow}/>
-                </ScrollView>
+                <ListView enableEmptySections dataSource={this.state.dataSource} renderRow={this.renderRow} refreshControl={this.refreshControl()}/>
             </View>
         );
     }
@@ -117,8 +110,8 @@ const styles = StyleSheet.create({
     }
 })
 
-function mapStateToProps({news}) {
-    return {news};
+function mapStateToProps({news, newsLoad}) {
+    return {news, newsLoad};
 }
 
 function mapDispatchToProps(dispatch) {
