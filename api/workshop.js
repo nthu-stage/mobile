@@ -53,3 +53,19 @@ export function showWorkshop(fb, w_id) {
         }
     });
 }
+
+export function attendWorkshop(fb, w_id) {
+    let url = `${baseUrl}/workshops/${w_id}`;
+    let {userID, accessToken} = fb;
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            userID,
+            signedRequest,
+            accessToken
+        },
+        body: JSON.stringify(fb)
+    });
+}
