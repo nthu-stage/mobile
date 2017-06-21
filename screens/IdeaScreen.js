@@ -101,7 +101,7 @@ class IdeaScreen extends Component {
         const {ideaLoad, ideaList } = this.props;
         return (
             <View style={styles.container}>
-                <Navbar title="許願池" right={< SearchModal passbackSearchText = {
+                <Navbar title="許願池" right={< SearchModal placeholder="尋找願望" passbackSearchText = {
                     e => this.setState({searchText: e})
                 } />}/>
                 <Segment left="熱門" right="最新" onUpdate={this.onUpdate}/>
