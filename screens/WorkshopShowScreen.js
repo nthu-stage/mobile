@@ -9,7 +9,9 @@ import {
     StatusBar,
     Platform,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    Animated,
+    PanResponder
 } from 'react-native';
 import {MapView} from 'expo';
 import {
@@ -86,8 +88,31 @@ class WorkshopShowScreen extends Component {
                 longitudeDelta: LONGITUDE_DELTA
             }
         }
-
         this.handleAttend = this.handleAttend.bind(this);
+
+        this.panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: () => true,
+            onPanResponderGrant: (event, gesture) => {
+                const {phase} = this.props.workshopShow;
+                if (!(phase === "reached" || phase === "investigating")) {
+                    return;
+                }
+                Animated.timing(this.position, {
+                    toValue: 1,
+                    duration: 150
+                }).start();
+            },
+            onPanResponderRelease: (event, gesture) => {
+                this.handleAttend();
+                Animated.timing(this.position, {
+                    toValue: 2,
+                    duration: 150
+                }).start(() => {
+                    this.position.setValue(0);
+                });
+            }
+        });
+        this.position = new Animated.Value(0);
     }
 
     componentWillMount() {
@@ -122,6 +147,24 @@ class WorkshopShowScreen extends Component {
     handleAttend() {
         const {state} = this.props.navigation;
         this.props.attendWorkshop(state.params.w_id);
+    }
+
+    getStyle() {
+        return ({
+            transform: [
+                {
+                    scale: this.position.interpolate({
+                        inputRange: [
+                            0, 1, 2
+                        ],
+                        outputRange: [
+                            1, 0.9, 1
+                        ],
+                        extrapolate: 'clamp'
+                    })
+                }
+            ]
+        });
     }
 
     render() {
@@ -159,17 +202,28 @@ class WorkshopShowScreen extends Component {
                         uri: `${image_url}`
                     }}/>
                     <View style={contentContainer}>
-                        <Button onPress={this.handleAttend} danger={!attended} disabled={!canPress} style={{
-                            width: '100%',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}>
-                            <Text>{!canPress
-                                    ? "未開放報名"
+                        <Animated.View style={this.getStyle()} {...this.panResponder.panHandlers}>
+                            <View style={{
+                                width: '100%',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: !canPress
+                                    ? '#A4A9AD'
                                     : attended
-                                        ? `我要報名`
-                                        : `取消報名`}</Text>
-                        </Button>
+                                        ? '#35A7FF'
+                                        : '#FF5964',
+                                padding: 12,
+                                borderRadius: 6
+                            }}>
+                                <Text style={{
+                                    color: 'white'
+                                }}>{!canPress
+                                        ? "未開放報名"
+                                        : attended
+                                            ? `我要報名`
+                                            : `取消報名`}</Text>
+                            </View>
+                        </Animated.View>
                         <WorkshopShowItem iconName="calendar" title="開始時間" subtitle={`${start_datetime}`}/>
                         <WorkshopShowItem iconName="calendar" title="結束時間" subtitle={`${end_datetime}`}/>
 
@@ -194,18 +248,28 @@ class WorkshopShowScreen extends Component {
                     <View style={contentContainer}>
                         <Text style={H2LineHeight}>詳細介紹</Text>
                         <Text style={textLineHeight}>{content}</Text>
-                        <Button onPress={this.handleAttend} danger={!attended} disabled={!canPress} style={{
-                            width: '100%',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            marginTop: 10
-                        }}>
-                            <Text>{!canPress
-                                    ? "未開放報名"
+                        <Animated.View style={[this.getStyle(), {marginTop: 10}]} {...this.panResponder.panHandlers}>
+                            <View style={{
+                                width: '100%',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: !canPress
+                                    ? '#A4A9AD'
                                     : attended
-                                        ? `我要報名`
-                                        : `取消報名`}</Text>
-                        </Button>
+                                        ? '#35A7FF'
+                                        : '#FF5964',
+                                padding: 12,
+                                borderRadius: 6
+                            }}>
+                                <Text style={{
+                                    color: 'white'
+                                }}>{!canPress
+                                        ? "未開放報名"
+                                        : attended
+                                            ? `我要報名`
+                                            : `取消報名`}</Text>
+                            </View>
+                        </Animated.View>
                     </View>
                 </ScrollView>
             </View>

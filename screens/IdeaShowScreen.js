@@ -7,7 +7,8 @@ import {
     Image,
     Dimensions,
     TouchableOpacity,
-    Alert
+    Animated,
+    PanResponder
 } from 'react-native';
 import {
     Container,
@@ -33,18 +34,61 @@ class IdeaShowScreen extends Component {
             }} name='gift'/>
     };
 
+    constructor(props) {
+        super(props);
+
+        this.panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: () => true,
+            onPanResponderGrant: (event, gesture) => {
+                Animated.timing(this.position, {
+                    toValue: 1,
+                    duration: 200,
+                }).start();
+            },
+            onPanResponderRelease: (event, gesture) => {
+                this.handleLike();
+                Animated.timing(this.position, {
+                    toValue: 2,
+                    duration: 200,
+                }).start(() => {
+                    this.position.setValue(0);
+                });
+            }
+        });
+
+        this.position = new Animated.Value(0);
+        this.handleLike = this.handleLike.bind(this);
+    }
+
     componentWillMount() {
         this.props.showIdea(this.props.navigation.state.params.i_id);
     }
 
-    handleLike(e) {
-        e.stopPropagation();
+    handleLike() {
         this.props.likeViewEditIdea(this.props.navigation.state.params.i_id);
+    }
+
+    getStyle() {
+        return ({
+            transform: [
+                {
+                    scale: this.position.interpolate({
+                        inputRange: [
+                            0, 1, 2
+                        ],
+                        outputRange: [
+                            1, 0.8, 1
+                        ],
+                        extrapolate: 'clamp'
+                    })
+                }
+            ]
+        });
     }
 
     render() {
         if (!this.props.ideaShow) {
-            return <AppLoading />
+            return <AppLoading/>
         }
         const {
             picture_url,
@@ -69,7 +113,7 @@ class IdeaShowScreen extends Component {
                 }} source={{
                     uri: image_url
                         ? image_url
-                            : 'https://placeholdit.imgix.net/~text?w=900&h=600'
+                        : 'https://placeholdit.imgix.net/~text?w=900&h=600'
                 }}/>
                 <View style={bannerBackground}/>
                 <View style={bannerTitle}>
@@ -87,15 +131,22 @@ class IdeaShowScreen extends Component {
                     }}>{`希望可以${goal}`}</Text>
                 </View>
                 <View style={likeContainer}>
-                    <Button rounded onPress={(e) => this.handleLike(e)} style={{
-                        backgroundColor: 'white'
-                    }}>
-                        <Icon name="heart" style={{
-                            color: liked
-                                ? '#FF5964'
-                                : '#A4A9AD'
-                        }}/>
-                    </Button>
+                    <Animated.View style={this.getStyle()} {...this.panResponder.panHandlers}>
+                        <View style={{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: 50,
+                            width: 50,
+                            borderRadius: 25,
+                            backgroundColor: 'white'
+                        }}>
+                            <Icon name="heart" style={{
+                                color: liked
+                                    ? '#FF5964'
+                                    : '#A4A9AD'
+                            }}/>
+                        </View>
+                    </Animated.View>
                     <Text style={{
                         color: 'white',
                         marginLeft: 10,
