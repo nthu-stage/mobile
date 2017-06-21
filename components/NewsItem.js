@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {
     ListItem,
     Thumbnail,
@@ -38,10 +38,10 @@ export default class NewsItem extends Component {
             'like': 'heart'
         }[action];
         const iconColor = {
-            'propose': '#145C9E',
-            'attend': '#145C9E',
-            'come_up_with': '#7E52A0',
-            'like': '#EF476F'
+            'propose': '#35A7FF',
+            'attend': '#35A7FF',
+            'come_up_with': '#A14DA0',
+            'like': '#FF5964'
         }[action];
         return {iconName, iconColor}
     }
@@ -72,8 +72,12 @@ export default class NewsItem extends Component {
             <ListItem avatar last={last}>
                 <Left>
                     <TouchableOpacity onPress={this.onPress}>
-                        <Thumbnail small source={{
+                        <Image source={{
                             uri: picture_url
+                        }} style ={{
+                            width: 36,
+                            height: 36,
+                            borderRadius: 18,
                         }}/>
                         <View style={iconCornerCotainer}>
                             <View style={{

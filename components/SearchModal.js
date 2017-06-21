@@ -35,22 +35,37 @@ export default class SearchModal extends React.Component {
                         fontSize: 16
                     }}/>
                     <Modal animationType='none' transparent={true} visible={modalToggle} onRequestClose={() => {}}>
-                        <Container style={{
+                        <View style={{
+                            flex: 1,
                             backgroundColor: 'rgba(0, 0, 0, 0.5)'
                         }}>
-                            <Header searchBar rounded style={{
-                                backgroundColor: 'transparent',
+                            <View style={{
+                                width: '100%',
+                                height: 20
+                            }}/>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding: 10,
+                                width: '100%',
+                                height: 64,
+                                backgroundColor: 'rgba(0, 0, 0, 0)',
                                 borderBottomWidth: 0
                             }}>
-                                <Item style={{
+                                <Item rounded style={{
                                     backgroundColor: 'white'
                                 }}>
-                                    <Icon name='search'/>
-                                    <Input autoFocus placeholder='Search' defaultValue={searchText} onEndEditing={this.handleSearch}/>
-                                    <Icon name='close' onPress={this.handleClear}/>
+                                    <Icon name='search' style={{
+                                        fontSize: 16
+                                    }}/>
+                                    <Input autoFocus placeholder={this.props.placeholder} defaultValue={searchText} onEndEditing={this.handleSearch}/>
+                                    <Icon name='close' onPress={this.handleClear} style={{
+                                        fontSize: 16
+                                    }}/>
                                 </Item>
-                            </Header>
-                        </Container>
+                            </View>
+                        </View>
                     </Modal>
                 </View>
             </TouchableOpacity>

@@ -94,7 +94,7 @@ class ProfileScreen extends Component {
                         <Left>
                             <Icon style={{
                                 ...icon,
-                                color: 'orange'
+                                color: '#FFBA49'
                             }} name="bell"/>
                         </Left>
                         <Body>
@@ -105,10 +105,10 @@ class ProfileScreen extends Component {
                         </Right>
                     </ListItem>
                     <ProfileItem icon="calendar" iconColor="grey" title="平常有空的時間"/>
-                    <ProfileItem onPress={e => navigate('workshopListStack', {title: '我提案的工作坊', dataArray: propose})} icon="users" iconColor="#145C9E" title="我提案的工作坊"/>
-                    <ProfileItem onPress={e => navigate('workshopListStack', {title: '我報名的工作坊', dataArray: attend})} icon="user-plus" iconColor="#145C9E" title="我報名的工作坊"/>
-                    <ProfileItem onPress={e => navigate('ideaListStack', {title: '我許下的願望', dataArray: comeUpWith})} icon="gift" iconColor="#7E52A0" title="我許下的願望"/>
-                    <ProfileItem onPress={e => navigate('ideaListStack', {title: '我喜歡的願望', dataArray: like})} icon="heart" iconColor="#EF476F" title="我喜歡的願望"/>
+                    <ProfileItem onPress={e => navigate('workshopListStack', {title: '我提案的工作坊', dataArray: propose})} icon="users" iconColor="#35A7FF" title="我提案的工作坊"/>
+                    <ProfileItem onPress={e => navigate('workshopListStack', {title: '我報名的工作坊', dataArray: attend})} icon="user-plus" iconColor="#35A7FF" title="我報名的工作坊"/>
+                    <ProfileItem onPress={e => navigate('ideaListStack', {title: '我許下的願望', dataArray: comeUpWith})} icon="gift" iconColor="#A14DA0" title="我許下的願望"/>
+                    <ProfileItem onPress={e => navigate('ideaListStack', {title: '我喜歡的願望', dataArray: like})} icon="heart" iconColor="#FF5964" title="我喜歡的願望"/>
                 </ScrollView>
             </View>
         );
@@ -146,12 +146,6 @@ const styles = {
     author: {
         color: 'white',
         fontSize: 24,
-        textShadowColor: 'grey',
-        textShadowOffset: {
-            width: 0,
-            height: 2
-        },
-        textShadowRadius: 3
     },
     authorImageContainer: {
         position: 'absolute',
@@ -160,12 +154,12 @@ const styles = {
         top: 180 - 50,
         left: 20,
         borderRadius: 50,
-        shadowColor: 'grey',
+        shadowColor: '#A4A9AD',
         shadowOffset: {
             width: 0,
             height: 2
         },
-        shadowOpacity: 0.8,
+        shadowOpacity: 0.15,
         shadowRadius: 3
     },
     authorImage: {

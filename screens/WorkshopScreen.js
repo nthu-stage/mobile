@@ -44,7 +44,7 @@ class WorkshopScreen extends Component {
                 rowHasChanged: (r1, r2) => JSON.stringify(r1) !== JSON.stringify(r2)
             }),
             searchText: '',
-            stateFilter: 3,
+            stateFilter: 2,
             modalToggle: false,
             limit: 3,
             hasMoreWorkshops: true
@@ -79,7 +79,7 @@ class WorkshopScreen extends Component {
             goal = stateFilter & 1;
         return (
             <View style={styles.container}>
-                <Navbar title="工作坊" right={< SearchModal passbackSearchText = {
+                <Navbar title="工作坊" right={< SearchModal placeholder="搜尋喜愛的工作坊" passbackSearchText = {
                     e => this.handleSearch(e)
                 } />}/>
                 <Segment multiple left="調查中" right="已達標" onUpdate={this.handleFilter}/>
@@ -96,7 +96,7 @@ class WorkshopScreen extends Component {
                     if (workshopLoad || !workshopList.length)
                         return false;
                     return hasMoreWorkshops;
-                }} onLoadMoreAsync={this.handleLoadMore} enableEmptySections={true}/>
+                }} onLoadMoreAsync={this.handleLoadMore} enableEmptySections={true} removeClippedSubviews={false}/>
             </View>
         );
     }
@@ -128,7 +128,7 @@ class WorkshopScreen extends Component {
     handleSearch(e) {
         if (e !== this.state.searchText) {
             this.setState({searchText: e});
-            this.props.listWorkshop(e, this.stateFilter, 0, this.state.limit);
+            this.props.listWorkshop(e, this.state.stateFilter, 0, this.state.limit);
         }
     }
 }
