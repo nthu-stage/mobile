@@ -20,7 +20,7 @@ import {
 } from 'native-base';
 import {LinearGradient} from 'expo';
 import {showIdea} from '../actions/idea';
-import { likeViewEditIdea } from '../actions/idea'
+import {likeViewEditIdea} from '../actions/idea'
 
 const {width, height} = Dimensions.get('window');
 
@@ -32,39 +32,47 @@ class IdeaShowScreen extends Component {
                 fontSize: 24
             }} name='gift'/>
     };
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
             picture_url: "https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/18622427_1859238271067164_3869120362467491071_n.jpg?oh=681ac9d57e2917e97ce9d25f027b76d4&oe=59D96830",
             idea_type: 'teach',
-            skill:'a' ,
-            goal:'a' ,
-            like_number:'9487',
-            liked:true
+            skill: 'a',
+            goal: 'a',
+            like_number: '9487',
+            liked: true
         }
     }
-    componentWillMount(){
-        this.props.showIdea(this.props.navigation.state.params.i_id);
-        
-    }
-    handleLike(e) {
-        e.stopPropagation();
-        this.props.likeViewEditIdea(this.props.navigation.state.params.i_id);
+
+    componentWillMount() {
+        // this.props.showIdea(this.props.navigation.state.params.i_id);
+        this.props.showIdea(10);
 
     }
+
+    handleLike(e) {
+        e.stopPropagation();
+        // this.props.likeViewEditIdea(this.props.navigation.state.params.i_id);
+        this.props.likeViewEditIdea(10);
+    }
+
     render() {
         console.log("show screen")
         console.log(this.props.ideaShow);
-        const { picture_url, idea_type, skill, goal, like_number, liked, image_url, name}=this.props.ideaShow? this.props.ideaShow:this.state;
         const {
-            bannerBackground,
-            bannerTitle,
-            authorContainer,
-            authorImageContainer,
-            authorImage,
-            likeContainer
-        } = styles;
+            picture_url,
+            idea_type,
+            skill,
+            goal,
+            like_number,
+            liked,
+            image_url,
+            name
+        } = this.props.ideaShow
+            ? this.props.ideaShow
+            : this.state;
+        const {bannerBackground, bannerTitle, authorContainer, authorImage, likeContainer} = styles;
         return (
             <View style={{
                 flex: 1
@@ -75,31 +83,40 @@ class IdeaShowScreen extends Component {
                     height: '100%',
                     width: '100%'
                 }} source={{
-                    uri: image_url? image_url:'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
+                    uri: image_url
+                        ? image_url
+                            : 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
                 }}/>
                 <View style={bannerBackground}/>
                 <View style={bannerTitle}>
                     <Text style={{
                         color: 'white',
                         fontSize: 30,
-                        lineHeight: 36,
                         marginBottom: 8
-                    }}>{`${idea_type==='teach'?'我想教':'我想學'}${skill}`}</Text>
+                    }}>{`${idea_type === 'teach'
+                            ? '我想教'
+                            : '我想學'}${skill}`}</Text>
                     <Text style={{
                         color: 'white',
                         fontSize: 20,
                         lineHeight: 24
-                    }}>{goal}</Text>
+                    }}>{`希望可以${goal}`}</Text>
                 </View>
                 <View style={likeContainer}>
-                    <Button danger rounded onPress={(e) => this.handleLike(e)}>
-                        <Icon name="heart" style={{color:liked?'yellow':'white'}} />
+                    <Button rounded onPress={(e) => this.handleLike(e)} style={{
+                        backgroundColor: 'white'
+                    }}>
+                        <Icon name="heart" style={{
+                            color: liked
+                                ? '#EA526F'
+                                : '#A4A9AD'
+                        }}/>
                     </Button>
                     <Text style={{
                         color: 'white',
                         marginLeft: 10,
                         fontSize: 20
-                    }}>{`${like_number}人喜歡`}</Text>
+                    }}>{`${like_number} 人喜歡`}</Text>
                 </View>
                 <View style={{
                     flex: 1,
@@ -117,19 +134,18 @@ class IdeaShowScreen extends Component {
                         flexDirection: 'row',
                         alignItems: 'center'
                     }}>
-                        <View style={authorImageContainer}>
-                            <Image style={authorImage} source={{
-                                uri: picture_url
-                            }}/>
-                        </View>
+                        <Image style={authorImage} source={{
+                            uri: picture_url
+                        }}/>
                         <Text style={{
                             color: 'white',
                             marginLeft: 10,
-                            fontSize: 24
+                            fontSize: 20
                         }}>{name}</Text>
                     </View>
                     <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
                         <Icon name="close" style={{
+                            fontSize: 24,
                             color: 'white'
                         }}/>
                     </TouchableOpacity>
@@ -145,15 +161,10 @@ function mapDispatchToProps(dispatch) {
         likeViewEditIdea
     }, dispatch);
 }
-function mapStateToProps({ ideaShow }) {
-    return {
-        ideaShow,
-        
-    }
+function mapStateToProps({ideaShow}) {
+    return {ideaShow}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(IdeaShowScreen);
-
-
 
 const styles = {
     bannerBackground: {
@@ -179,18 +190,6 @@ const styles = {
         width: '100%',
         top: 40,
         left: 20
-    },
-    authorImageContainer: {
-        width: 36,
-        height: 36,
-        borderRadius: 18,
-        shadowColor: 'grey',
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.8,
-        shadowRadius: 2
     },
     authorImage: {
         height: 36,
