@@ -3,10 +3,9 @@ import {
     View,
     Image,
     StyleSheet,
-    TouchableOpacity,
     TouchableWithoutFeedback,
-    AlertIOS,
-    Alert
+    Animated,
+    PanResponder
 } from 'react-native';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -53,6 +52,27 @@ class IdeaItem extends Component {
             like_number,
             liked
         }
+
+        this.panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: () => true,
+            onPanResponderGrant: (event, gesture) => {
+                Animated.timing(this.position, {
+                    toValue: 1,
+                    duration: 200
+                }).start();
+            },
+            onPanResponderRelease: (event, gesture) => {
+                this.handleLike();
+                Animated.timing(this.position, {
+                    toValue: 2,
+                    duration: 200
+                }).start(() => {
+                    this.position.setValue(0);
+
+                });
+            }
+        });
+        this.position = new Animated.Value(0);
     }
 
     componentWillReceiveProps(next) {
@@ -65,9 +85,26 @@ class IdeaItem extends Component {
         this.props.navigation.navigate('ideaShow', {i_id: this.props.i_id});
     }
 
-    handleLike(e) {
-        e.stopPropagation();
+    handleLike() {
         this.props.likeSearchIdea(this.props.i_id);
+    }
+
+    getStyle() {
+        return ({
+            transform: [
+                {
+                    scale: this.position.interpolate({
+                        inputRange: [
+                            0, 1, 2
+                        ],
+                        outputRange: [
+                            1, 0.8, 1
+                        ],
+                        extrapolate: 'clamp'
+                    })
+                }
+            ]
+        });
     }
 
     render() {
@@ -114,35 +151,30 @@ class IdeaItem extends Component {
                             borderRadius: 10,
                             opacity: 0.3
                         }}/>
-                        <TouchableOpacity onPress={this.handleLike}>
+                        <Animated.View style={this.getStyle()} {...this.panResponder.panHandlers}>
                             <View style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 position: 'absolute',
                                 left: 6,
                                 bottom: 6,
-                                backgroundColor: 'rgba(255, 255, 255, 0)'
+                                width: 24,
+                                height: 24,
+                                borderRadius: 12,
+                                backgroundColor: 'white',
+                                justifyContent: 'center',
+                                alignItems: 'center'
                             }}>
-                                <View style={{
-                                    width: 24,
-                                    height: 24,
-                                    borderRadius: 12,
-                                    backgroundColor: 'white',
-                                    marginRight: 6,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}>
-                                    <Icon style={{
-                                        fontSize: 16,
-                                        color: liked
-                                            ? '#FF5964'
-                                            : '#A4A9AD',
-                                        textAlign: 'center',
-                                        backgroundColor: 'rgba(0, 0, 0, 0)'
-                                    }} name='heart'/>
-                                </View>
+                                <Icon style={{
+                                    fontSize: 16,
+                                    color: liked
+                                        ? '#FF5964'
+                                        : '#A4A9AD',
+                                    textAlign: 'center',
+                                    backgroundColor: 'rgba(0, 0, 0, 0)'
+                                }} name='heart'/>
                             </View>
-                        </TouchableOpacity>
+                        </Animated.View>
                     </View>
                     <View style={{
                         flex: 1,
