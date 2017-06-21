@@ -44,7 +44,7 @@ class IdeaItem extends Component {
             goal,
             like_number,
             liked
-        } = this.props.content;
+        } = this.props;
         this.state = {
             picture_url,
             idea_type,
@@ -57,17 +57,17 @@ class IdeaItem extends Component {
 
     componentWillReceiveProps(next) {
         this.setState({
-            ...next.content
+            ...next
         })
     }
 
     handlePress() {
-        this.props.navigation.navigate('ideaShow', {i_id: this.props.content.i_id});
+        this.props.navigation.navigate('ideaShow', {i_id: this.props.i_id});
     }
 
     handleLike(e) {
         e.stopPropagation();
-        this.props.likeSearchIdea(this.props.content.i_id);
+        this.props.likeSearchIdea(this.props.i_id);
     }
 
     render() {

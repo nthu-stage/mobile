@@ -67,8 +67,8 @@ export default class SearchModal extends React.Component {
         this.setState({
             searchText: e.nativeEvent.text,
             modalToggle: !this.state.modalToggle
-        })
-        this.props.passbackSearchText(e.nativeEvent.text);
+        },()=>this.props.passbackSearchText(this.state.searchText))
+        
     }
 
     handleClear() {
