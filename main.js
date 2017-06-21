@@ -21,9 +21,7 @@ import reducers from './reducers';
 
 import getStore from './reducers/index'
 
-console.ignoredYellowBox = [
-  'Warning: View.propTypes',
-];
+console.ignoredYellowBox = ['Warning: View.propTypes'];
 
 export const AppNavigator = TabNavigator({
     auth: {
@@ -91,7 +89,13 @@ export const AppNavigator = TabNavigator({
                     }
                 }, {headerMode: 'none'})
             }
-        }, {lazy: true})
+        }, {
+            lazy: true,
+            tabBarOptions: {
+                activeTintColor: '#FF5964',
+                inactiveTintColor: '#A4A9AD'
+            }
+        })
     }
 }, {
     navigationOptions: {

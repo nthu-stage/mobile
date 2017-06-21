@@ -57,6 +57,25 @@ class WorkshopShowScreen extends Component {
             }} name='users'/>
     };
 
+    static defaultProps = {
+        image_url: 'https://placeholdit.imgix.net/~text?txtsize=33&txt=1500%C3%97600&w=1500&h=600',
+        start_datetime: 'loading',
+        end_datetime: 'loading',
+        location: '清華大學',
+        content: 'loading',
+        title: 'loading',
+        max_number: 0,
+        min_number: 0,
+        deadline: 'loading',
+        pre_deadline: 'loading',
+        introduction: 'loading',
+        price: 0,
+        attendees_number: 'loading',
+        phase: 'investigating',
+        name: 'loading',
+        attended: false
+    };
+
     constructor(props) {
         super(props);
         this.state = {
@@ -106,12 +125,7 @@ class WorkshopShowScreen extends Component {
     }
 
     render() {
-        const {
-            container,
-            contentContainer,
-            H2LineHeight,
-            textLineHeight,
-        } = styles;
+        const {container, contentContainer, H2LineHeight, textLineHeight} = styles;
         const {state} = this.props.navigation;
         const {
             image_url,
@@ -131,7 +145,7 @@ class WorkshopShowScreen extends Component {
             name,
             attended
         } = this.props.workshopShow;
-        const canPress = (phase==="reached"||phase==="investigating");
+        const canPress = (phase === "reached" || phase === "investigating");
         return (
             <View style={container}>
                 <Navbar left={this.renderGoBackIcon()} title={title}/>
@@ -150,9 +164,11 @@ class WorkshopShowScreen extends Component {
                             justifyContent: 'center',
                             alignItems: 'center'
                         }}>
-                            <Text>{!canPress? "未開放報名":attended
-                                    ? `我要報名`
-                                    : `取消報名`}</Text>
+                            <Text>{!canPress
+                                    ? "未開放報名"
+                                    : attended
+                                        ? `我要報名`
+                                        : `取消報名`}</Text>
                         </Button>
                         <WorkshopShowItem iconName="calendar" title="開始時間" subtitle={`${start_datetime}`}/>
                         <WorkshopShowItem iconName="calendar" title="結束時間" subtitle={`${end_datetime}`}/>
@@ -166,7 +182,7 @@ class WorkshopShowScreen extends Component {
                             flex: 1,
                             height: 120,
                             width: '100%',
-                            marginTop: 6,
+                            marginTop: 6
                         }} region={this.state.region}>
                             <MapView.Marker coordinate={this.state.region} title={location}/>
                         </MapView>
@@ -182,11 +198,13 @@ class WorkshopShowScreen extends Component {
                             width: '100%',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            marginTop: 10,
+                            marginTop: 10
                         }}>
-                            <Text>{!canPress? "未開放報名":attended
-                                    ? `我要報名`
-                                    : `取消報名`}</Text>
+                            <Text>{!canPress
+                                    ? "未開放報名"
+                                    : attended
+                                        ? `我要報名`
+                                        : `取消報名`}</Text>
                         </Button>
                     </View>
                 </ScrollView>
