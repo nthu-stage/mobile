@@ -44,7 +44,7 @@ class WorkshopScreen extends Component {
                 rowHasChanged: (r1, r2) => JSON.stringify(r1) !== JSON.stringify(r2)
             }),
             searchText: '',
-            stateFilter: 2,
+            stateFilter: 3,
             modalToggle: false,
             limit: 3,
             hasMoreWorkshops: true
@@ -82,7 +82,7 @@ class WorkshopScreen extends Component {
                 <Navbar title="工作坊" right={< SearchModal placeholder="搜尋喜愛的工作坊" passbackSearchText = {
                     e => this.handleSearch(e)
                 } />}/>
-                <Segment multiple left="調查中" right="已達標" onUpdate={this.handleFilter}/>
+                <Segment multiple left="調查中" right="已達標" initial={[true, true]} onUpdate={this.handleFilter}/>
                 <ListView refreshControl={< RefreshControl refreshing = {
                     workshopLoad
                 }
