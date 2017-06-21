@@ -5,6 +5,7 @@ export default class Segment extends Component {
     static defaultProps = {
         left: '',
         right: '',
+        initial: [true, false],
         multiple: false,
         onUpdate: () => {}
     }
@@ -15,9 +16,10 @@ export default class Segment extends Component {
         this.onPressLeft = this.onPressLeft.bind(this);
         this.onPressRight = this.onPressRight.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
+        const {initial} = this.props;
         this.state = {
-            left: true,
-            right: false
+            left: initial[0],
+            right: initial[1]
         }
     }
 
