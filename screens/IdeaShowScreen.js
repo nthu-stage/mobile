@@ -18,7 +18,7 @@ import {
     Icon,
     Button
 } from 'native-base';
-import {LinearGradient} from 'expo';
+import {LinearGradient, AppLoading} from 'expo';
 import {showIdea} from '../actions/idea';
 import {likeViewEditIdea} from '../actions/idea'
 
@@ -32,22 +32,9 @@ class IdeaShowScreen extends Component {
                 fontSize: 24
             }} name='gift'/>
     };
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            picture_url: "https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/18622427_1859238271067164_3869120362467491071_n.jpg?oh=681ac9d57e2917e97ce9d25f027b76d4&oe=59D96830",
-            idea_type: 'teach',
-            skill: 'a',
-            goal: 'a',
-            like_number: '9487',
-            liked: true
-        }
-    }
 
     componentWillMount() {
         this.props.showIdea(this.props.navigation.state.params.i_id);
-
     }
 
     handleLike(e) {
@@ -56,8 +43,9 @@ class IdeaShowScreen extends Component {
     }
 
     render() {
-        console.log("show screen")
-        console.log(this.props.ideaShow);
+        if (!this.props.ideaShow) {
+            return <AppLoading />
+        }
         const {
             picture_url,
             idea_type,
@@ -67,9 +55,7 @@ class IdeaShowScreen extends Component {
             liked,
             image_url,
             name
-        } = this.props.ideaShow
-            ? this.props.ideaShow
-            : this.state;
+        } = this.props.ideaShow;
         const {bannerBackground, bannerTitle, authorContainer, authorImage, likeContainer} = styles;
         return (
             <View style={{
@@ -83,7 +69,7 @@ class IdeaShowScreen extends Component {
                 }} source={{
                     uri: image_url
                         ? image_url
-                            : 'https://image.ibb.co/h1ue55/8KfJCHZ.jpg'
+                            : 'https://placeholdit.imgix.net/~text?w=900&h=600'
                 }}/>
                 <View style={bannerBackground}/>
                 <View style={bannerTitle}>
