@@ -108,7 +108,7 @@ class IdeaShowScreen extends Component {
                     }}>
                         <Icon name="heart" style={{
                             color: liked
-                                ? '#EA526F'
+                                ? '#FF5964'
                                 : '#A4A9AD'
                         }}/>
                     </Button>
