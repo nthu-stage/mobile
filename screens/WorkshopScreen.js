@@ -96,7 +96,7 @@ class WorkshopScreen extends Component {
                     if (workshopLoad || !workshopList.length)
                         return false;
                     return hasMoreWorkshops;
-                }} onLoadMoreAsync={this.handleLoadMore} enableEmptySections={true}/>
+                }} onLoadMoreAsync={this.handleLoadMore} enableEmptySections={true} removeClippedSubviews={false}/>
             </View>
         );
     }
@@ -128,7 +128,7 @@ class WorkshopScreen extends Component {
     handleSearch(e) {
         if (e !== this.state.searchText) {
             this.setState({searchText: e});
-            this.props.listWorkshop(e, this.stateFilter, 0, this.state.limit);
+            this.props.listWorkshop(e, this.state.stateFilter, 0, this.state.limit);
         }
     }
 }
