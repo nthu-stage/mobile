@@ -97,7 +97,7 @@ class NewsScreen extends Component {
         return (
             <View style={styles.container}>
                 <Navbar title="動態消息"/>
-                <ListView enableEmptySections dataSource={this.state.dataSource} renderRow={this.renderRow} refreshControl={this.refreshControl()}/>
+                <ListView enableEmptySections removeClippedSubviews={false} dataSource={this.state.dataSource} renderRow={this.renderRow} refreshControl={this.refreshControl()}/>
             </View>
         );
     }

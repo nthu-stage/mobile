@@ -38,10 +38,10 @@ export default class NewsItem extends Component {
             'like': 'heart'
         }[action];
         const iconColor = {
-            'propose': '#145C9E',
-            'attend': '#145C9E',
-            'come_up_with': '#7E52A0',
-            'like': '#EF476F'
+            'propose': '#35A7FF',
+            'attend': '#35A7FF',
+            'come_up_with': '#FFBA49',
+            'like': '#FF5964'
         }[action];
         return {iconName, iconColor}
     }
