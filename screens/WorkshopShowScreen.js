@@ -145,7 +145,7 @@ class WorkshopShowScreen extends Component {
                         uri: `${image_url}`
                     }}/>
                     <View style={contentContainer}>
-                        <Button onPress={this.handleAttend} disabled={!canPress} danger={!attended} style={{
+                        <Button onPress={this.handleAttend} danger={!attended} disabled={!canPress} style={{
                             width: '100%',
                             justifyContent: 'center',
                             alignItems: 'center'
@@ -178,7 +178,7 @@ class WorkshopShowScreen extends Component {
                     <View style={contentContainer}>
                         <Text style={H2LineHeight}>詳細介紹</Text>
                         <Text style={textLineHeight}>{content}</Text>
-                        <Button onPress={this.handleAttend} disabled={!canPress} danger={!attended} style={{
+                        <Button onPress={this.handleAttend} danger={!attended} disabled={!canPress} style={{
                             width: '100%',
                             justifyContent: 'center',
                             alignItems: 'center',
