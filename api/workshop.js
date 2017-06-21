@@ -17,7 +17,6 @@ export function listWorkshop(fb, searchText = "", stateFilter) {
 }
 
 export function listMoreWorkshop(fb, searchText = "", stateFilter, offset, limit) {
-    stateFilter = 'all';
     let url = `${baseUrl}/workshops?searchText=${searchText}&stateFilter=${stateFilter}`;
     if(offset){
         url+='&offset=';
