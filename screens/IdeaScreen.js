@@ -97,12 +97,12 @@ class IdeaScreen extends Component {
         const {ideaList, ideaLoad} = this.props;
         console.log("load more "+searchText+" "+order+" "+ideaList.length)
         if (listingIdeas === ideaList.length)
-            this.props.listMoreIdea(searchText, order, ideaList.length, limit);
+            this.props.listMoreIdea(this.state.searchText, order, ideaList.length, limit);
     }
     handleSearch(e) {
         if (e !== this.state.searchText) {
-             this.setState({searchText: e},() => this.props.listIdea(this.state.searchText, this.state.order));
-            
+             this.setState({searchText: e});
+            this.props.listIdea(e, this.state.order)
         }
     }
     render() {
@@ -115,21 +115,17 @@ class IdeaScreen extends Component {
 
                 } />}/>
                 <Segment left="熱門" right="最新" onUpdate={this.onUpdate}/>
-                {/*<ScrollView style={{
-                    flex: 1
-                }}>*/}
 
                     <ListView refreshControl={< RefreshControl refreshing = {ideaLoad} onRefresh = {this.handleRefresh} />}
-                    distanceToLoadMore={300} renderScrollComponent={props => {
+                    distanceToLoadMore={0} renderScrollComponent={props => {
                         return <InfiniteScrollView {...props}/>
-                    }} dataSource={dataSource} renderRow={(idea) => {
+                    }} dataSource={this.state.dataSource} renderRow={(idea) => {
                         return <IdeaItem key={idea.i_id} navigation={this.props.navigation} {...idea}/>;
                     }} canLoadMore={() => {
                         if (ideaLoad || !ideaList.length)
                             return false;
-                        return this.state.hasMoreIdeas;
-                    }} onLoadMoreAsync={this.handleLoadMore} enableEmptySections={true}/>
-                {/*</ScrollView>*/}
+                        return (ideaList.length>=8);
+                    }} onLoadMoreAsync={this.handleLoadMore} enableEmptySections={true} removeClippedSubviews={false}/>
             </View>
         );
     }
