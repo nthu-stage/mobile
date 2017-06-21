@@ -13,7 +13,7 @@ class AuthScreen extends Component {
     constructor(props) {
         super(props);
 
-        AsyncStorage.removeItem('fb');
+        // AsyncStorage.removeItem('fb');
 
         this.mountVideo = this.mountVideo.bind(this);
         this.onPressLogin = this.onPressLogin.bind(this);

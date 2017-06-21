@@ -210,8 +210,8 @@ class WorkshopShowScreen extends Component {
                                 backgroundColor: !canPress
                                     ? '#A4A9AD'
                                     : attended
-                                        ? '#35A7FF'
-                                        : '#FF5964',
+                                        ? '#FF5964'
+                                        : '#35A7FF',
                                 padding: 12,
                                 borderRadius: 6
                             }}>
@@ -220,8 +220,8 @@ class WorkshopShowScreen extends Component {
                                 }}>{!canPress
                                         ? "未開放報名"
                                         : attended
-                                            ? `我要報名`
-                                            : `取消報名`}</Text>
+                                            ? `取消報名`
+                                            : `我要報名`}</Text>
                             </View>
                         </Animated.View>
                         <WorkshopShowItem iconName="calendar" title="開始時間" subtitle={`${start_datetime}`}/>
@@ -256,8 +256,8 @@ class WorkshopShowScreen extends Component {
                                 backgroundColor: !canPress
                                     ? '#A4A9AD'
                                     : attended
-                                        ? '#35A7FF'
-                                        : '#FF5964',
+                                        ? '#FF5964'
+                                        : '#35A7FF',
                                 padding: 12,
                                 borderRadius: 6
                             }}>
@@ -266,8 +266,8 @@ class WorkshopShowScreen extends Component {
                                 }}>{!canPress
                                         ? "未開放報名"
                                         : attended
-                                            ? `我要報名`
-                                            : `取消報名`}</Text>
+                                            ? `取消報名`
+                                            : `我要報名`}</Text>
                             </View>
                         </Animated.View>
                     </View>

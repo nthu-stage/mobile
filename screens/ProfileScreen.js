@@ -90,21 +90,6 @@ class ProfileScreen extends Component {
                     </View>
                 </View>
                 <ScrollView>
-                    <ListItem icon>
-                        <Left>
-                            <Icon style={{
-                                ...icon,
-                                color: '#FFBA49'
-                            }} name="bell"/>
-                        </Left>
-                        <Body>
-                            <Text>通知開啟</Text>
-                        </Body>
-                        <Right>
-                            <Switch value={true}/>
-                        </Right>
-                    </ListItem>
-                    <ProfileItem icon="calendar" iconColor="grey" title="平常有空的時間"/>
                     <ProfileItem onPress={e => navigate('workshopListStack', {title: '我提案的工作坊', dataArray: propose})} icon="users" iconColor="#35A7FF" title="我提案的工作坊"/>
                     <ProfileItem onPress={e => navigate('workshopListStack', {title: '我報名的工作坊', dataArray: attend})} icon="user-plus" iconColor="#35A7FF" title="我報名的工作坊"/>
                     <ProfileItem onPress={e => navigate('ideaListStack', {title: '我許下的願望', dataArray: comeUpWith})} icon="gift" iconColor="#A14DA0" title="我許下的願望"/>
@@ -114,6 +99,22 @@ class ProfileScreen extends Component {
         );
     }
 }
+
+// <ListItem icon>
+//     <Left>
+//         <Icon style={{
+//             ...icon,
+//             color: '#FFBA49'
+//         }} name="bell"/>
+//     </Left>
+//     <Body>
+//         <Text>通知開啟</Text>
+//     </Body>
+//     <Right>
+//         <Switch value={true}/>
+//     </Right>
+// </ListItem>
+// <ProfileItem icon="calendar" iconColor="grey" title="平常有空的時間"/>
 
 const styles = {
     container: {
