@@ -46,15 +46,13 @@ class IdeaShowScreen extends Component {
     }
 
     componentWillMount() {
-        // this.props.showIdea(this.props.navigation.state.params.i_id);
-        this.props.showIdea(10);
+        this.props.showIdea(this.props.navigation.state.params.i_id);
 
     }
 
     handleLike(e) {
         e.stopPropagation();
-        // this.props.likeViewEditIdea(this.props.navigation.state.params.i_id);
-        this.props.likeViewEditIdea(10);
+        this.props.likeViewEditIdea(this.props.navigation.state.params.i_id);
     }
 
     render() {
