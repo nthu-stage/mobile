@@ -10,7 +10,6 @@ export function listIdea(fb, searchText, order, offset, limit) {
     if(limit){
         url+='&limit=';
         url+=`${limit}`;
-        console.log(limit);
     }
     let {userID, accessToken} = fb
     return fetch(url, {

@@ -50,17 +50,19 @@ class IdeaScreen extends Component {
             rowHasChanged: (r1, r2) => (r1.i_id !== r2.i_id) || (r1.like_number !== r2.like_number)
         });
         this.state = {
-            order: 'new',
+            order: 'hot',
             modalToggle: false,
             searchText: '',
             dataSource: ds.cloneWithRows([]),
             hasMoreIdeas:true,
             limit:4,
+
         };
 
         this.onUpdate = this.onUpdate.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleRefresh = this.handleRefresh.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
 
     }
 
@@ -69,11 +71,13 @@ class IdeaScreen extends Component {
     }
 
     onUpdate(order) {
+        console.log("in update" + order[0]);
         if (order[0]) {
-            this.setState({order: 'hot'})
+            this.setState({order: 'hot'}, () => this.props.listIdea(this.state.searchText, this.state.order))
         } else {
-            this.setState({order: 'new'})
+            this.setState({order: 'new'}, () => this.props.listIdea(this.state.searchText, this.state.order))
         }
+        
     }
 
     componentWillReceiveProps(nextProps) {
@@ -88,21 +92,27 @@ class IdeaScreen extends Component {
         this.props.listIdea(this.state.searchText, this.state.order);
     }
     handleLoadMore(){
-        console.log("load more")
+        
         const {searchText, order, limit, hasMoreWorkshops, listingIdeas} = this.state;
         const {ideaList, ideaLoad} = this.props;
+        console.log("load more "+searchText+" "+order+" "+ideaList.length)
         if (listingIdeas === ideaList.length)
-        console.log("load more2")
             this.props.listMoreIdea(searchText, order, ideaList.length, limit);
     }
-
+    handleSearch(e) {
+        if (e !== this.state.searchText) {
+             this.setState({searchText: e},() => this.props.listIdea(this.state.searchText, this.state.order));
+            
+        }
+    }
     render() {
         const {order, modalToggle, searchText, dataSource} = this.state;
         const {ideaLoad, ideaList } = this.props;
         return (
             <View style={styles.container}>
                 <Navbar title="許願池" right={< SearchModal placeholder="尋找願望" passbackSearchText = {
-                    e => this.setState({searchText: e})
+                    (e) => this.handleSearch(e)
+
                 } />}/>
                 <Segment left="熱門" right="最新" onUpdate={this.onUpdate}/>
                 {/*<ScrollView style={{
@@ -113,7 +123,7 @@ class IdeaScreen extends Component {
                     distanceToLoadMore={300} renderScrollComponent={props => {
                         return <InfiniteScrollView {...props}/>
                     }} dataSource={dataSource} renderRow={(idea) => {
-                        return <IdeaItem key={idea.i_id} navigation={this.props.navigation} content={idea}/>;
+                        return <IdeaItem key={idea.i_id} navigation={this.props.navigation} {...idea}/>;
                     }} canLoadMore={() => {
                         if (ideaLoad || !ideaList.length)
                             return false;
