@@ -73,8 +73,8 @@ export default class Segment extends Component {
                     ]}>
                         <Text style={{
                             color: left === true
-                                ? 'red'
-                                : 'gray'
+                                ? '#FF5964'
+                                : '#A4A9AD'
                         }}>{this.props.left}</Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -88,8 +88,8 @@ export default class Segment extends Component {
                     ]}>
                         <Text style={{
                             color: right === true
-                                ? 'red'
-                                : 'gray'
+                                ? '#FF5964'
+                                : '#A4A9AD'
                         }}>{this.props.right}</Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
         height: 30,
         borderWidth: 1,
         borderRadius: 20,
-        borderColor: 'red',
+        borderColor: '#FF5964',
         alignItems: 'center',
         justifyContent: 'center'
     }
