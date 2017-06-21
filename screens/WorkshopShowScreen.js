@@ -131,7 +131,7 @@ class WorkshopShowScreen extends Component {
             name,
             attended
         } = this.props.workshopShow;
-
+        const canPress = (phase==="reached"||phase==="investigating");
         return (
             <View style={container}>
                 <Navbar left={this.renderGoBackIcon()} title={title}/>
@@ -145,12 +145,12 @@ class WorkshopShowScreen extends Component {
                         uri: `${image_url}`
                     }}/>
                     <View style={contentContainer}>
-                        <Button onPress={this.handleAttend} danger={!attended} style={{
+                        <Button onPress={this.handleAttend} disabled={!canPress} danger={!attended} style={{
                             width: '100%',
                             justifyContent: 'center',
                             alignItems: 'center'
                         }}>
-                            <Text>{attended
+                            <Text>{!canPress? "未開放報名":attended
                                     ? `我要報名`
                                     : `取消報名`}</Text>
                         </Button>
@@ -178,13 +178,13 @@ class WorkshopShowScreen extends Component {
                     <View style={contentContainer}>
                         <Text style={H2LineHeight}>詳細介紹</Text>
                         <Text style={textLineHeight}>{content}</Text>
-                        <Button onPress={this.handleAttend} danger={!attended} style={{
+                        <Button onPress={this.handleAttend} disabled={!canPress} danger={!attended} style={{
                             width: '100%',
                             justifyContent: 'center',
                             alignItems: 'center',
                             marginTop: 10,
                         }}>
-                            <Text>{attended
+                            <Text>{!canPress? "未開放報名":attended
                                     ? `我要報名`
                                     : `取消報名`}</Text>
                         </Button>
